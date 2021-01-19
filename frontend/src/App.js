@@ -2,8 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Home from './Components/Pages/Home'
 import Register from './Components/auth/Register'
-import Login from './Components/auth/Login'
-import Header from './Components/layout/Header'
+import Login from './Components/Auth/Login'
+import Header from './Components/Layout/Header'
 
 export default function App() {
   return (
