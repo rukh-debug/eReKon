@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path')
 const cors = require('cors');
 
-require('dotenv').config();
+require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
 ///////////////////////
 // setup express... //
@@ -23,9 +24,26 @@ app.listen(PORT, () => console.log(`Started server at ${PORT}`));
 /////////////////////
 // setup mongoose //
 ////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////
+// HELP //
 // mongo shell docs
-//https://docs.mongodb.com/manual/mongo/
+// https://docs.mongodb.com/manual/mongo/
 // starting mongo server
 // https://docs.mongodb.com/manual/reference/program/mongod/
 // mongod --noauth --port 4000 --dbpath ~/tuts/MERN_AuthSys/MERN_AUTH/DB   
+///////////////////////////////////////////////////////////////////////////////////////
 
+mongoose.connect(process.env.MONGODB_CONNECT,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  }, (err) => {
+    if (err) throw err;
+    console.log('MongoDB Connected')
+  });
+
+  // router middleware
+
+app.use('/users', require('./routes/userRouter'))
