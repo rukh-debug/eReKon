@@ -1,0 +1,28 @@
+*{
+  margin: 1;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a{
+  color: aqua;
+  text-decoration: unset;
+}
+
+ul {
+  margin: 1.5rem;
+  list-style: none;
+}
+
+button,
+input[type='submit']{
+  border: none;
+  background: none;
+  color: unset;
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol{
+  margin: 1em;
+}
+
