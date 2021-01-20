@@ -6,4 +6,6 @@ const userSchema = new mongoose.Schema({
   displayName: {type: String},
 });
 
+let User;
+
 module.exports = User = mongoose.model('user', userSchema);
