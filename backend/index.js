@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path')
 const cors = require('cors');
 
+
 require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
 ///////////////////////
@@ -45,5 +46,5 @@ mongoose.connect(process.env.MONGODB_CONNECT,
   });
 
   // router middleware
-
 app.use('/users', require('./routes/userRouter'))
+app.use('/recon', require('./routes/reconRouter'))
