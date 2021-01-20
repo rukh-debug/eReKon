@@ -16,7 +16,18 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.12"
+    "mongoose": "^5.11.12",
+    "adm-zip": "^0.5.1",
+    "axios": "^0.21.0",
+    "body-parser": "^1.19.0",
+    "capture-website": "^1.2.5",
+    "cheerio": "^1.0.0-rc.5",
+    "evilscan": "^1.7.5",
+    "express-easy-zip": "^1.1.5",
+    "fs-extra": "^9.0.1",
+    "python-shell": "^2.0.3",
+    "socket.io": "^3.0.5",
+    "wappalyzer": "^6.5.21"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
