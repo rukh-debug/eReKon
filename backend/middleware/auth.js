@@ -8,16 +8,16 @@ const auth = (req, res, next) => {
         .status(401)
         .json({ msg: "No auth token, auth denied" });
     const verified = jwt.verify(token, process.env.JWT_SECRETS);
-    if (!verified){
+    if (!verified) {
       return res
-      .status(401)
-      .json({msg: "Token verification failed, auth denied"});
+        .status(401)
+        .json({ msg: "Token verification failed, auth denied" });
     }
     req.user = verified.id;
     next();
   }
   catch (e) {
-    res.status(500).json({error: e.message})
+    res.status(500).json({ error: e.message })
   }
 }
 
