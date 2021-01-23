@@ -1,12 +1,232 @@
-.register-box{
-  margin: 50px;
-  padding: 50px;
-  background-color: #343A40;
-  color: aliceblue;
+.test{
+  background-color: aqua;
+}
+
+/* Define an animation behavior */
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+.go-center{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.orange{
+  color: #FF8C34;
+}
+
+.loading-container{
+  margin-top: 45vh;
+  width: 40%;
+  transition: margin-top 1s;
+}
+/* This is the class name given by the Font Awesome component when icon contains 'spinner' */
+.fa-spin {
+  /* Apply 'spinner' keyframes looping once every second (1s)  */
+  animation: spinner 1s linear infinite;
+}
+/* carousel */
+
+.cOpen{
+  display: block;
+  position: fixed;
+  z-index: 1;
+
+  overflow: hidden;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4); 
+  left: 20%;
+  top: 20%;
+
+  width: 60%;
+  height: 70%;
+}
+
+.darkTransparent{
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.carousel-container{
+  position: fixed;
+  top: 20%;
+  left: 80%;
+  z-index: 2;
+}
+
+/* scroll-bar */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #1B1E21; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #FF8C34; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #FF8C34; 
+}
+
+
+.register-card{
+  border: 0px;
+  border-radius: 27px;
+  box-shadow: 0px 0px 12px 2px rgba(0, 0, 0, 0.81);
+  overflow: hidden;
+}
+
+.card{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: black;
+  background-clip: border-box;
+}
+
+.card-body{
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 70px 60px 60px;
+  width: max-content;
+}
+
+.title-holder{
+  margin-bottom: 30px;
+}
+
+.register-img-card{
+  background-image: url("./Assets/img/keyboard.jpeg");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+
+/* Search */
+
+.scan-box{
+  margin-top: 30vh;
+  width: 40%;
+  transition: margin-top 1s;
+}
+.scan-box-complete{
+  margin-top: 10vh;
+  width: 40%;
+  transition: margin-top 1s;
+}
+
+.shadow-scan{
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.81);
+}
+
+.scan-input{
+  padding:20px;
   border-radius: 7px;
+  border: 4px;
+  border-color: #FF8C34;
+  font-size: 20px;
+  color: #bbb;
+  background:black;
+  letter-spacing: 1px;
+  word-spacing: 10px;
+  font-family: 'Arvo', sans-serif;
+  line-height: 25px;
 }
 
-.my-nav{
-  color: blanchedalmond;
+
+/* myNav */
+
+.black-nav{
+  background-color: black;
+  box-shadow: 0px 0px 12px 2px rgba(0, 0, 0, 0.81);
 }
 
+/* Landing */
+
+header.masthead {
+  padding-top: 10.5rem;
+  padding-bottom: 6rem;
+  text-align: center;
+  color: #FF8C34;
+  background-image: url("./Assets/img/keyboardDark.jpg");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+header.masthead .masthead-subheading {
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.5rem;
+  margin-bottom: 25px;
+  font-family: "Droid Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+header.masthead .masthead-heading {
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 17rem;
+    padding-bottom: 12.5rem;
+  }
+  header.masthead .masthead-subheading {
+    font-size: 2.25rem;
+    font-style: italic;
+    line-height: 2.25rem;
+    margin-bottom: 2rem;
+  }
+  header.masthead .masthead-heading {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 4.5rem;
+    margin-bottom: 4rem;
+  }
+}
+
+/* Table */
+
+.table {
+  width: 100%;
+  margin-top: 0%;
+  color: #f3a467;
+}
+
+.imageFix{
+    height: 120px;
+    width: 200px;
+    background-color: rgb(74, 115, 121);
+    cursor: pointer;
+} 
+
+/* thead, tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+} */
+/* tbody {
+  display: block;
+  table-layout: fixed;
+  overflow: scroll;
+  max-height: 200px;
+} */
+
+thead th {
+  top: 73px; 
+  background-color: #1b1e21;
+  }
