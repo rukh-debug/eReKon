@@ -1,18 +1,30 @@
-import React from 'react'
-import { Navbar, Container, Nav } from 'react-bootstrap'
-import { Link, NavLink } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { Navbar, Container } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import AuthNav from "../Auth/AuthNav"
+import logo from '../../Assets/img/logo.png'
+import UserContext from '../../context/UserContext'
 
 export default function Header() {
 
+  const { userData } = useContext(UserContext)
+  const [scroll, setScroll] = useState(0)  
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScroll(window.scrollY > 20);
+    });
+  }, []); 
+
+
   return (
     <Container fluid>
-      <Navbar bg="dark" expand='lg' variant="dark" className="sticky-top pr-5 pl-5 m-6 navbar-dark border border-right-0 border-left-0 rounded my-nav">
-        <Navbar.Brand as={Link} to="/">eReKon</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <AuthNav />
+      <Navbar expand='lg' variant="dark" className={scroll? "fixed-top black-nav" : "fixed-top"}>
+          <Navbar.Brand className="ml-200" as={Link} to="/"><img src={logo} alt="logo" width="120" /></Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          { userData.isLoading ? null : <AuthNav /> }
       </Navbar>
-      </Container>
+    </Container>
   )
 }
 
