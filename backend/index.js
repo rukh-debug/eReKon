@@ -11,7 +11,7 @@ require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 //////////////////////
 
 const app = express();
-
+app.use(express.static('static'))
 // enable middleware
 app.use(express.json());
 app.use(cors());
