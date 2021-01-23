@@ -2,15 +2,14 @@
 const subdomains = require('./findomainHander.js');
 const validUrl = require('../tools/httprobe/goProbe.js')
 const screenCapture = require('./screenShotFiles/captureWeb.js')
-const dirFlush = require('./screenShotFiles/screenShotFlush.js')
 const waybackurl = require('./waybackurl.js')
 const serverVer = require('./serverVersion.js')
 const urlInValid = require('./urlInValid.js')
 const portNdetails = require('./portScanning/detailer.js')
-const extract = require('./screenShotFiles/grabLinks.js')
+//const extract = require('./screenShotFiles/grabLinks.js')
 const wappalizer = require('./versionScan/detailer.js')
 const headerData = require('./scraping/scrapTitles.js')
-const zipper = require('./zipper.js');
+const fse = require('fs-extra')
 
 let compileToList = (data, headerInfo) => {
 
@@ -40,17 +39,16 @@ let compileToList = (data, headerInfo) => {
       list.push(individual)
     }
     res(list)
-    await zipper.zip(list)
   })
 }
 
 let progressL = 'IDLE'
 let progressP = 5
 
-let domainsInfoFast = async (url) => {
+let domainsInfoFast = async (url, uuid, folderNum) => {
 
   //flush everything on screenshot folder before starting anything.
-  dirFlush.flush()
+  //dirFlush.flush()
   //dirFlush.flush2()
   progressP = 10
   progressL = '(1/8) Folder Flushed'
@@ -89,11 +87,10 @@ let domainsInfoFast = async (url) => {
   progressP = 90
   progressL = '(7/8) Capturing Webpages'
   console.log(`[Capture]: Capturing Pages`)
-  await screenCapture.convert(validUrls);
+  await screenCapture.convert(validUrls, uuid, folderNum);
 
   progressP = 98
   progressL = '(8/8) Compiling Everything'
-  //await screenCapture.copyFiles()
   // putting it to list
   let result = await compileToList(mixWithVersion, headerInfo)
   // after all the above tasks are complete returns the below object
@@ -128,9 +125,17 @@ let okUrl = async (url) => {
   return getStatus
 }
 
+let folderCreator = async (uuid) => {
+  let path = `${__dirname}/../../static/img/${uuid}`
+  fse.ensureDirSync(path)
+}
+
 // exports every function to be used in routes.js for later use. 
+// its a riddle. Sorry i didnt knew about other way of exporting
+// while I created this tool
 exports.urlOk = okUrl
 exports.fastDomains = domainsInfoFast
 exports.wbfind = wayback
 exports.getVer = serverInfo
 exports.progress = progressBar
+exports.folderCreator = folderCreator

@@ -1,3 +1,2 @@
-mail.register.com.np
-www.register.com.np
-register.com.np
+rubenk.com.np
+www.rubenk.com.np

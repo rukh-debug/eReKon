@@ -9,19 +9,23 @@ const fse = require('fs-extra')
 // if your pc is a beast, increase it, if its not probably decrease it.
 // ram consumption increases.
 process.setMaxListeners(0);
-let captureScreen = async (arr) => {
+let captureScreen = async (arr, uuid, folderNum) => {
+
+  let folderPath = `${__dirname}/../../../static/img/${uuid}/${folderNum}`
+  fse.ensureDirSync(folderPath)
+
   let arrDevide = []
   // loop through all the links to be capture
   for (let i = 0; i < arr.length - 1; i++) {
     try {
-      await captureWebsite.file(arr[i], `${__dirname}/./screenShot/${i}.png`)
+      await captureWebsite.file(arr[i], `${folderPath}/${i}.png`)
     }
     catch {
       try {
-        await captureWebsite.file(arr[0], `${__dirname}/./screenShot/${i}.png`)
+        await captureWebsite.file(arr[0], `${folderPath}/${i}.png`)
       }
       catch {
-        await captureWebsite.file(`https://google.com`, `${__dirname}/./screenShot/${i}.png`)
+        await captureWebsite.file(`https://google.com`, `${folderPath}/${i}.png`)
       }
     }
   }
@@ -47,4 +51,4 @@ let copyToInterface = async () => {
   })
 }
 exports.convert = captureScreen
-exports.copyFiles = copyToInterface
+//exports.copyFiles = copyToInterface

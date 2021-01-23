@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-const auth = (req, res, next) => {
+const auth = async (req, res, next) => {
+  const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
+  await sleep(2000);
   try {
     const token = req.header('x-auth-token');
     if (!token)

@@ -7,26 +7,32 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
+  "nodemonConfig": {
+    "ignore": ["static/*"],
+    "verbos": true
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.12",
+    "@ant-design/icons": "^4.4.0",
     "adm-zip": "^0.5.1",
     "axios": "^0.21.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "capture-website": "^1.2.5",
     "cheerio": "^1.0.0-rc.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "evilscan": "^1.7.5",
+    "express": "^4.17.1",
     "express-easy-zip": "^1.1.5",
     "fs-extra": "^9.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.12",
     "python-shell": "^2.0.3",
     "socket.io": "^3.0.5",
+    "uuid": "^8.3.2",
     "wappalyzer": "^6.5.21"
   },
   "devDependencies": {
