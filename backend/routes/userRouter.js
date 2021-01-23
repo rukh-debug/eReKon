@@ -3,6 +3,8 @@ const User = require('../models/userModel')
 const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
 const auth = require("../middleware/auth")
+const { v4: uuidv4 } = require('uuid');
+const app = require('../src/controller/app')
 
 router.post('/register', async (req, res) => {
   try {
@@ -36,12 +38,13 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(password, salt);
 
-
-
+    const uuid = uuidv4(); 
+    app.folderCreator(uuid)
     const newUser = new User({
       email,
       password: passwordHash, 
-      displayName
+      displayName,
+      uuid,
     });
 
     const savedUser = await newUser.save();
@@ -87,6 +90,7 @@ router.post("/login", async (req, res) => {
         id: user._id,
         displayName: user.displayName,
         email: user.email,
+        uuid: user.uuid
       }
     })
   }
@@ -130,6 +134,7 @@ router.get('/', auth, async (req, res) => {
     email: user.email,
     displayName: user.displayName,
     id: user._id,
+    uuid: user.uuid
   });
 })
 
