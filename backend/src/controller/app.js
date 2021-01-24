@@ -11,10 +11,11 @@ const wappalizer = require('./versionScan/detailer.js')
 const headerData = require('./scraping/scrapTitles.js')
 const fse = require('fs-extra')
 const progress = require('./progress')
+const { isValidObjectId } = require('mongoose');
 
 let compileToList = (data, headerInfo) => {
 
-  return new Promise( async (res, rej) => {
+  return new Promise(async (res, rej) => {
     let list = []
     let keys = Object.keys(data)
     for (let i = 0; i < keys.length; i++) {
@@ -44,47 +45,49 @@ let compileToList = (data, headerInfo) => {
 }
 
 
+
 let domainsInfoFast = async (url, uuid, folderNum) => {
 
 
   await progress.start(uuid, folderNum)
+  await progress.update(uuid, `Scanning Subdomains(1/7)`, 20, folderNum)
+
   //use finddomain bin file to scan all the doamins, returns nothing, creates a text file with subdomains.
   console.log(`[Subdomains]: Gathering subdomains`)
 
-  progress.update(uuid, `Scanning Subdomains(1/7)`,20, folderNum)
   await subdomains.get(url);
   //filtering valid
 
-  progress.update(uuid, `HTTProbe (2/7)`,30, folderNum)
+  progress.update(uuid, `HTTProbe (2/7)`, 30, folderNum)
   console.log(`[HTTProbe]: Httprober probing`)
   let validUrls = await validUrl.prober()
 
   // scan every 200 status code url with top 20 ports
 
-  progress.update(uuid, `Scanning Ports (3/7)`,45, folderNum)
+  progress.update(uuid, `Scanning Ports (3/7)`, 45, folderNum)
   console.log(`[Port]: Gathering Port`)
   let portMixed = await portNdetails.get(validUrls, 'fast')
   //get all the tech info from wappalizer
 
-  progress.update(uuid, `Scanning Versions (4/7)`,60, folderNum)
+  progress.update(uuid, `Scanning Versions (4/7)`, 60, folderNum)
   console.log(`[Wappalizer]: Gathering Versions`)
   let mixWithVersion = await wappalizer.getAndMerge(validUrls, portMixed)
 
   // header informations
-  progress.update(uuid, `Getting headers (5/7)`,80, folderNum)
+  progress.update(uuid, `Getting headers (5/7)`, 80, folderNum)
   let headerInfo = await headerData.get(validUrls)
-  
+
   //capturing webpages
-  progress.update(uuid, `Capturing webPages (6/7)`,90, folderNum)
+  progress.update(uuid, `Capturing webPages (6/7)`, 90, folderNum)
   console.log(`[Capture]: Capturing Pages`)
   await screenCapture.convert(validUrls, uuid, folderNum);
 
 
   // putting it to list
-  progress.update(uuid, `Compiling Everything (7/7)`,99, folderNum)
+  progress.update(uuid, `Compiling Everything (7/7)`, 99, folderNum)
   let result = await compileToList(mixWithVersion, headerInfo)
   // after all the above tasks are complete returns the below object
-  progress.update(uuid, `Scan Complete`,`100`, folderNum)
+  progress.update(uuid, `Scan Complete`, `100`, folderNum)
   return result
 }
 
