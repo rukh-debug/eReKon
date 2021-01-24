@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path')
 const cors = require('cors');
-
+const io = require('socket.io')
+const fs = require('fs')
 
 require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
@@ -45,6 +46,36 @@ mongoose.connect(process.env.MONGODB_CONNECT,
     console.log('MongoDB Connected')
   });
 
-  // router middleware
+// router middleware
 app.use('/users', require('./routes/userRouter'))
 app.use('/recon', require('./routes/reconRouter'))
+
+// setup express Server
+const server = require('http').createServer(app)
+const socketServer = io(server, { cors: { origin: "*" } })
+const socketPort = 5001
+server.listen(socketPort, () => console.log(`Socket on ${socketPort}`))
+
+let processSocket = (uuid, folderNum, socket) => {
+  try {
+    let raw = fs.readFileSync(`${__dirname}/static/img/${uuid}/${folderNum}/progress.json`)
+    let jsonData = JSON.parse(raw)
+    console.log(jsonData)
+    socket.emit("FromAPI", jsonData)
+  }
+  catch(e){
+    socket.emit("FromAPI", {progressL:"IDLE", progressP:100})
+  }  
+}
+
+socketServer.on("connection", (socket) => {
+  // processSocket(uuid, folderNum, socket), 1000);
+  // socketServer.on("Disconnect", () => {
+  //   console.log("client disconnected");
+  //   clearInterval(interval);
+  // });
+  socket.on('UUIDnDirNum', (data) => {
+    processSocket(data.uuid, data.folderNum, socket)
+  })
+});
+

@@ -81,33 +81,33 @@ router.post('/dash', auth, async (req, res) => {
   }
 })
 
-//router.post('/progress', async (req, res) => {
-//  try {
-//    console.log('hello')
-//    let { token, uuid } = req.body;
-//    let decoded = jwt.verify(token, process.env.JWT_SECRETS)
-//    // check if the user have ever saved his data or not...
-//    const findUserData = await ScannedData.findOne({ userRef: decoded.id })
-//    let folderNum;
-//    if (findUserData) {
-//      let num = findUserData.scanData.length
-//      folderNum = num.toString()
-//    }
-//    else {
-//      folderNum = "0"
-//    }
-//
-//
-//    let raw = fs.readFileSync(`${__dirname}/../static/img/${uuid}/${folderNum}/progress.json`)
-//    let jsonData = JSON.parse(raw)
-//    console.log(jsonData)
-//    res.status(200).json(jsonData)
-//
-//
-//  }
-//  catch (e) {
-//    res.status(500).json({ msg: e.message })
-//  }
-//})
+router.post('/progress', async (req, res) => {
+ try {
+   console.log('hello')
+   let { token, uuid } = req.body;
+   let decoded = jwt.verify(token, process.env.JWT_SECRETS)
+   // check if the user have ever saved his data or not...
+   const findUserData = await ScannedData.findOne({ userRef: decoded.id })
+   let folderNum;
+   if (findUserData) {
+     let num = findUserData.scanData.length
+     folderNum = num.toString()
+   }
+   else {
+     folderNum = "0"
+   }
+
+
+   let raw = fs.readFileSync(`${__dirname}/../static/img/${uuid}/${folderNum}/progress.json`)
+   let jsonData = JSON.parse(raw)
+   console.log(jsonData)
+   res.status(200).json(jsonData)
+
+
+ }
+ catch (e) {
+   res.status(500).json({ msg: e.message })
+ }
+})
 
 module.exports = router;

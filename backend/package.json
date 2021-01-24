@@ -8,9 +8,11 @@
     "start": "nodemon index.js"
   },
   "nodemonConfig": {
-    "ignore": ["static/*"],
+    "ignore": [
+      "static/*"
+    ],
     "verbos": true
-},
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -31,7 +33,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.12",
     "python-shell": "^2.0.3",
-    "socket.io": "^3.0.5",
+    "socket.io": "^3.1.0",
     "uuid": "^8.3.2",
     "wappalyzer": "^6.5.21"
   },
