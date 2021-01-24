@@ -22,10 +22,10 @@ let captureScreen = async (arr, uuid, folderNum) => {
     }
     catch {
       try {
-        await captureWebsite.file(arr[0], `${folderPath}/${i}.png`)
+        await captureWebsite.file(`https://www.rubenk.com.np/sdlkjsdk`, `${folderPath}/${i}.png`)
       }
       catch {
-        await captureWebsite.file(`https://google.com`, `${folderPath}/${i}.png`)
+        await captureWebsite.file(`https://www.rubenk.com.np/sdlkjsdk`, `${folderPath}/${i}.png`)
       }
     }
   }

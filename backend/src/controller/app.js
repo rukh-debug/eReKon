@@ -10,6 +10,7 @@ const portNdetails = require('./portScanning/detailer.js')
 const wappalizer = require('./versionScan/detailer.js')
 const headerData = require('./scraping/scrapTitles.js')
 const fse = require('fs-extra')
+const progress = require('./progress')
 
 let compileToList = (data, headerInfo) => {
 
@@ -24,6 +25,7 @@ let compileToList = (data, headerInfo) => {
         port: individualData[`port`],
         ip: individualData[`ip`],
         tech: individualData[`tech`],
+        status: individualData[`status`]
       }
 
       for (let j = 0; j < headerInfo.length; j++) {
@@ -31,7 +33,6 @@ let compileToList = (data, headerInfo) => {
           let theObj = headerInfo[j]
           if (theObj[`url`] === individualData[`url`]) {
             individual[`contentLength`] = headerInfo[j][`contentLength`]
-            individual[`status`] = headerInfo[j][`status`]
             individual[`pageTitle`] = headerInfo[j][`pageTitle`]
           }
         }
@@ -42,75 +43,59 @@ let compileToList = (data, headerInfo) => {
   })
 }
 
-let progressL = 'IDLE'
-let progressP = 5
 
 let domainsInfoFast = async (url, uuid, folderNum) => {
 
-  //flush everything on screenshot folder before starting anything.
-  //dirFlush.flush()
-  //dirFlush.flush2()
-  progressP = 10
-  progressL = '(1/8) Folder Flushed'
 
+  await progress.start(uuid, folderNum)
   //use finddomain bin file to scan all the doamins, returns nothing, creates a text file with subdomains.
   console.log(`[Subdomains]: Gathering subdomains`)
 
-  progressP = 25
-  progressL = '(2/8) Scanning Subdomains'
+  progress.update(uuid, `Scanning Subdomains(1/7)`,20, folderNum)
   await subdomains.get(url);
-
   //filtering valid
-  progressP = 40
-  progressL = '(3/8) Checking Validity'
+
+  progress.update(uuid, `HTTProbe (2/7)`,30, folderNum)
   console.log(`[HTTProbe]: Httprober probing`)
   let validUrls = await validUrl.prober()
 
   // scan every 200 status code url with top 20 ports
-  progressP = 50
-  progressL = '(4/8) Scanning Ports'
+
+  progress.update(uuid, `Scanning Ports (3/7)`,45, folderNum)
   console.log(`[Port]: Gathering Port`)
   let portMixed = await portNdetails.get(validUrls, 'fast')
   //get all the tech info from wappalizer
 
-  progressP = 70
-  progressL = '(5/8) Scanning Technelogies'
+  progress.update(uuid, `Scanning Versions (4/7)`,60, folderNum)
   console.log(`[Wappalizer]: Gathering Versions`)
   let mixWithVersion = await wappalizer.getAndMerge(validUrls, portMixed)
 
   // header informations
-  progressP = 80
-  progressL = '(6/8) Scanning Header Information'
+  progress.update(uuid, `Getting headers (5/7)`,80, folderNum)
   let headerInfo = await headerData.get(validUrls)
   
   //capturing webpages
-  progressP = 90
-  progressL = '(7/8) Capturing Webpages'
+  progress.update(uuid, `Capturing webPages (6/7)`,90, folderNum)
   console.log(`[Capture]: Capturing Pages`)
   await screenCapture.convert(validUrls, uuid, folderNum);
 
-  progressP = 98
-  progressL = '(8/8) Compiling Everything'
+
   // putting it to list
+  progress.update(uuid, `Compiling Everything (7/7)`,99, folderNum)
   let result = await compileToList(mixWithVersion, headerInfo)
   // after all the above tasks are complete returns the below object
+  progress.update(uuid, `Scan Complete`,`100`, folderNum)
   return result
 }
 
-let progressBar = () =>{
-  return {
-    progressP,
-    progressL
-  }
-}
-
-
+// unused
 let serverInfo = async (url) => {
   // get server's version from header
   let info = await serverVer.get(url)
   return info
 }
 
+// unused
 let wayback = async (url) => {
   // hit wayback machine's api and get all the endpoints and archived urls
   let urls = await waybackurl.find(url)
@@ -119,12 +104,14 @@ let wayback = async (url) => {
   }
 }
 
+// used in router
 let okUrl = async (url) => {
   // check if the given url is valid or not
   let getStatus = await urlInValid.status(url)
   return getStatus
 }
 
+// creating folder on id creation
 let folderCreator = async (uuid) => {
   let path = `${__dirname}/../../static/img/${uuid}`
   fse.ensureDirSync(path)
@@ -137,5 +124,4 @@ exports.urlOk = okUrl
 exports.fastDomains = domainsInfoFast
 exports.wbfind = wayback
 exports.getVer = serverInfo
-exports.progress = progressBar
 exports.folderCreator = folderCreator
