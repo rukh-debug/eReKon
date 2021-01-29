@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { OverlayTrigger, Tooltip, Table, Image, Container, Badge, Button } from "react-bootstrap";
 import classNames from 'classnames'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
