@@ -43,21 +43,24 @@ export default function Register() {
       .catch((err) => {
         setLoading(false)
         console.log(err.response)
-        addToast(err.response.data.msg, {
+        addToast(`Error from backend`, {
           appearance: 'warning',
           autoDismiss: true,
         })
+        if (err.response) {
 
-        if (err.response.status === 401 || 500) {
-          setError(err.response.data.msg)
-        }
-        else {
-          addToast("Unexpected Error, Is backend server UP?", {
-            appearance: 'error',
-            autoDismiss: true,
-          })
 
-          setError('Unexpected Error, Is backend server UP?')
+          if (err.response.status === 401 || 500) {
+            setError(err.response.data.msg)
+          }
+          else {
+            addToast("Unexpected Error, Is backend server UP?", {
+              appearance: 'error',
+              autoDismiss: true,
+            })
+
+            setError('Unexpected Error, Is backend server UP?')
+          }
         }
       })
   }

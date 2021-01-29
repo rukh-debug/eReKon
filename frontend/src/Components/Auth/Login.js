@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import UserContext from "../../context/UserContext"
-import logo from '../../Assets/img/logo.png'
+import DashContext from "../../context/DashContext"
 import Loading from "../pages/Loading"
 
 
@@ -20,14 +20,38 @@ export default function Login() {
   const [error, setError] = useState();
 
   const { setUserData, userData } = useContext(UserContext);
+  const { dashData, setDashData } = useContext(DashContext);
 
   const submit = async (e) => {
+
+    const getDash = async () => {
+      setDashData({...dashData, dashIsLoading: true})
+      let token = localStorage.getItem("auth-token");
+      let body = { token }
+      await axios.post(`http://localhost:5000/recon/dash`, body,
+        {
+          headers: {
+            "x-auth-token": token
+          }
+        }
+      ).then((res) => {
+        setDashData({...dashData, data: res.data.data, dashIsLoading: false})
+        console.log(res.data.data)
+      }).catch((e) => {
+        addToast(e.response.data.error, {
+          appearance: "warning",
+          autoDismiss: true,
+        })
+        setDashData({...dashData, dashIsLoading: false})
+      })
+    }
+
     e.preventDefault();
     let user;
     setLoading(true)
     user = { email, password }
     await axios.post("http://localhost:5000/users/login", user)
-      .then((res) => {
+      .then( async (res) => {
         addToast("Successfully Logged In", {
           appearance: 'success',
           autoDismiss: true,
@@ -37,6 +61,7 @@ export default function Login() {
           user: res.data.user
         })
         localStorage.setItem('auth-token', res.data.token)
+        await getDash()
         setLoading(false)
         history.push('/')
       })
