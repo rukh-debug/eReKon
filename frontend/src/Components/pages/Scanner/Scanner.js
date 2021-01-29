@@ -1,10 +1,12 @@
-import { faCircleNotch, faSearch, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faCircleNotch, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState, useContext } from 'react'
 import { Container, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { useToasts } from 'react-toast-notifications'
 import ScannedData from '../../../context/ScannedContext'
 import UserContext from "../../../context/UserContext"
+import DashContext from "../../../context/DashContext"
+import ProgressContext from '../../../context/ProgressContext'
 import axios from 'axios'
 import Tables from "./Tables"
 import Progress from './Progress'
@@ -13,19 +15,43 @@ export default function Scanner() {
 
   const { addToast } = useToasts()
 
-  const [domain, setDomain] = useState();
-  const [error, setError] = useState();
-  const [isLoading, setLoading] = useState(false)
-
   const { scannedData, setScannedData } = useContext(ScannedData)
+  const { dashData, setDashData } = useContext(DashContext)
   const { userData } = useContext(UserContext)
+  const { progressData, setProgressData } = useContext(ProgressContext)
 
   const submit = async (e) => {
+
+    const getDash = async () => {
+      setDashData({ ...dashData, dashIsLoading: true })
+      let token = userData.token
+      let body = { token }
+      await axios.post(`http://localhost:5000/recon/dash`, body,
+        {
+          headers: {
+            "x-auth-token": userData.token
+          }
+        }
+      ).then((res) => {
+        setDashData({ data: res.data.data, dashIsLoading: false })
+      }).catch((e) => {
+        // addToast(e.response.data.error, {
+        //   appearance: "warning",
+        //   autoDismiss: true,
+        // })
+        setDashData({ ...dashData, dashIsLoading: false })
+      })
+    }
+
     setScannedData({ data: undefined })
-    setLoading(true)
+    setProgressData({
+      ...progressData,
+      start: true
+    })
+    //setLoading(true)
     e.preventDefault();
     let token = userData.token
-    let url = domain
+    let url = progressData.domain
     let uuid = userData.user.uuid
     let body = { token, url, uuid }
     try {
@@ -37,21 +63,28 @@ export default function Scanner() {
             "Content-Type": "application/json"
           }
         })
-      setLoading(false)
+      setProgressData({
+        start: false
+      })
+      //setLoading(false)
       setScannedData({ data: data })
       addToast(`Scan Success for ${url}`, {
         appearance: "success",
         autoDismiss: true,
       })
+
+
     }
     catch (e) {
-      setLoading(false)
+      //setLoading(false)
+      setProgressData({
+        start: false
+      })
       try {
-        addToast(e.response.data.msg, {
+        addToast(`API error from backend`, {
           appearance: "warning",
           autoDismiss: true,
         })
-        setError(e.response.data.msg)
       }
       catch (e) {
         addToast(`Error: ${e}`, {
@@ -65,37 +98,41 @@ export default function Scanner() {
       }
     }
 
+    getDash();
+
   }
   return (
     <>
       <Container className={!scannedData.data ? "scan-box" : "scan-box-complete"}>
         <h3 className='text-muted'>Scanner</h3>
         <Form onSubmit={submit}>
-        <InputGroup>
-          <FormControl
-            className=" scan-input shadow-scan"
-            placeholder="https://example.com/"
-            aria-label="Domain To Scan"
-            onChange={(e) => setDomain(e.target.value)}
-          />
+          <InputGroup>
+            <FormControl
+              className=" scan-input shadow-scan"
+              placeholder="https://example.com/"
+              aria-label="Domain To Scan"
+              value={progressData.domain}
+              disabled={progressData.start ? true: false}
+              onChange={(e) => setProgressData({...progressData, domain: e.target.value})}
+            />
 
-          <InputGroup.Append>
-            <Button
-              type="submit"
-              variant="info"
-              onClick={submit}
-              disabled={isLoading ? true : false}
-            >
-             { isLoading ? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} /> : <FontAwesomeIcon icon={faSearch} /> } 
-            </Button>
-          </InputGroup.Append>
+            <InputGroup.Append>
+              <Button
+                type="submit"
+                variant="info"
+                onClick={submit}
+                disabled={progressData.start ? true : false}
+              >
+                {progressData.start ? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} /> : <FontAwesomeIcon icon={faSearch} />}
+              </Button>
+            </InputGroup.Append>
 
-        </InputGroup>
+          </InputGroup>
         </Form>
-        {isLoading ? <Progress data={{progressPer: 20, progressTex: "20%"}} /> : null }
+        {progressData.start ? <Progress /> : null}
 
       </Container >
-      {scannedData.data && !isLoading ? (<Tables data={scannedData.data} uuid={userData.user.uuid} />) : null}
+      {scannedData.data ? (<Tables data={scannedData.data} uuid={userData.user.uuid} />) : null}
 
 
     </>
