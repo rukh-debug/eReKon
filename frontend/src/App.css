@@ -230,3 +230,29 @@ thead th {
   top: 73px; 
   background-color: #1b1e21;
   }
+
+/* dash */
+
+.dash-cont{
+  margin-top: 20vh;
+}
+
+.cardStyle{
+  margin: 10px;
+  width: 30%;
+}
+
+.cardStyle2{
+  width: 70%;
+  margin: 10px;
+}
+
+/* Settings */
+.setting-container{
+  margin-top: 20vh;
+}
+
+.card-container{
+  height: 60vh;
+  padding: 20px;
+}
