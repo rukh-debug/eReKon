@@ -256,3 +256,32 @@ thead th {
   height: 60vh;
   padding: 20px;
 }
+
+
+/* Profile */
+
+.imageContainer{
+  border-radius: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.textContInProfile{
+  margin-top: 3px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.setting-input{
+  width: 50%;
+}
+
+.field-item{
+  margin-bottom: 10px;
+}
+
+.row-input{
+  margin-left: auto;
+  margin-right: auto;
+}
