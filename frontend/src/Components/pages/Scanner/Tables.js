@@ -25,7 +25,7 @@ const Tables = (props) => {
   }
 
   let imgSrc = (uuid, folderNum, index) => {
-    return `http://localhost:5000/img/${uuid}/${folderNum}/${index}.png`
+    return `http://localhost:5000/user/${uuid}/img/${folderNum}/${index}.png`
   }
 
   const year = new Date().getFullYear()
