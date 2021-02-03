@@ -1,15 +1,16 @@
 const jwt = require("jsonwebtoken");
 
 const auth = async (req, res, next) => {
-  const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
-  await sleep(2000);
+
   try {
     const token = req.header('x-auth-token');
-    if (!token)
+    if (!token) {
       return res
         .status(401)
         .json({ msg: "No auth token, auth denied" });
+    }
     const verified = jwt.verify(token, process.env.JWT_SECRETS);
+
     if (!verified) {
       return res
         .status(401)

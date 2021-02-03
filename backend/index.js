@@ -58,7 +58,7 @@ server.listen(socketPort, () => console.log(`Socket on ${socketPort}`))
 
 let processSocket = (uuid, folderNum, socket) => {
   try {
-    let raw = fs.readFileSync(`${__dirname}/static/img/${uuid}/${folderNum}/progress.json`)
+    let raw = fs.readFileSync(`${__dirname}/static/user/${uuid}/img/${folderNum}/progress.json`)
     let jsonData = JSON.parse(raw)
     console.log(jsonData)
     socket.emit("FromAPI", jsonData)

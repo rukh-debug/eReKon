@@ -1,10 +1,2 @@
-svn.nmap.org
-scanme.nmap.org
-ack.nmap.org
-www.svn.nmap.org
-www.nmap.org
-scannme.nmap.org
-nmap.org
-issues.nmap.org
-research.nmap.org
-wwww.nmap.org
+www.rubenk.com.np
+rubenk.com.np

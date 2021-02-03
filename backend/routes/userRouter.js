@@ -45,6 +45,7 @@ router.post('/register', async (req, res) => {
       password: passwordHash, 
       displayName,
       uuid,
+      scanMode : 'fast'
     });
 
     const savedUser = await newUser.save();
@@ -137,5 +138,24 @@ router.get('/', auth, async (req, res) => {
     uuid: user.uuid
   });
 })
+
+router.post('/config', auth, async (req, res) => {
+  const { scanMode, bForceSubs  } = req.body;
+
+  // validate...
+  if (!scanMode === 'fast' || !scanMode === 'effective'){
+    res.status(401).json({error: "Invalid scanmode option"})
+  }
+
+  if (scanMode === 'fast'){
+    res.status(200).json({msg: "Config Saved"})
+  }
+
+  if (scanMode === "effective" && typeOf(bForceSubs) === 'string' ){
+
+  }
+  
+})
+
 
 module.exports = router;
