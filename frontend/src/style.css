@@ -12,6 +12,15 @@ body{
   color: antiquewhite;
 }
 
+::selection {
+  background: #FF8C34; /* WebKit/Blink Browsers */
+  color: #ffffff;
+}
+::-moz-selection {
+  background: #FF8C34; /* Gecko Browsers */
+  color: #ffffff;
+}
+
 a{
   color: aqua;
   text-decoration: unset;
