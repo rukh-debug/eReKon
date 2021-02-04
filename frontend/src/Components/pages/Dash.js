@@ -25,6 +25,9 @@ export default function Dash() {
     return url.host
   }
 
+  // let getScanType = (arr) => {
+  //   let scanType = 
+  // }
 
   if (userData.isLoading) {
     return (
@@ -56,7 +59,7 @@ export default function Dash() {
               <div className="p-3 media d-flex">
                 <h1 className="mr-auto"><FontAwesomeIcon icon={faLink} /></h1>
                 <div className="ml-auto">
-                  <h3>{totalSubdomains? totalSubdomains : "0"}</h3>
+                  <h3>{totalSubdomains ? totalSubdomains : "0"}</h3>
                   <span>Subdomains</span>
                 </div>
               </div>
@@ -68,7 +71,7 @@ export default function Dash() {
               <div className="p-3 media d-flex">
                 <h1 className="mr-auto"><FontAwesomeIcon icon={faSearch} /></h1>
                 <div className="ml-auto">
-                  <h3>{dashData.data? dashData.data.length? dashData.data.length : "0" : "0"}</h3>
+                  <h3>{dashData.data ? dashData.data.length ? dashData.data.length : "0" : "0"}</h3>
                   <span>Total Scan</span>
                 </div>
               </div>
@@ -96,22 +99,23 @@ export default function Dash() {
             <div key={index}>
               <Col className='ml-auto'>
                 <Card bg='dark'>
-                <div className="p-3 media d-flex justify-content-between">
-                  <div><h1>{index + 1}.</h1></div>
-                  <div>{getDomainFromArr(item)}</div>
-                  <div className="d-flex flex-row"><h4>{item.length}&nbsp;</h4>Subdomains</div>
-                  <div>
-                    <Button
-                      variant="info"
-                      onClick={() => {
-                        setLoading({ loading: true, index: index })
-                        setScannedData({...scannedData, data:{scanResponse: dashData.data[index],folderNum: index}})
-                        history.push('/')
-                      }}
-                    >
-                      {loading && (loading.index === index) ? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} /> : <FontAwesomeIcon icon={faArrowCircleRight} />}
-                    </Button></div>
-                    </div>
+                  <div className="p-3 media d-flex justify-content-between">
+                    <div><h1>{index + 1}.</h1></div>
+                    <div>{getDomainFromArr(item)}</div>
+                    <div>scanType</div>
+                    <div className="d-flex flex-row"><h4>{item.length}&nbsp;</h4>Subdomains</div>
+                    <div>
+                      <Button
+                        variant="info"
+                        onClick={() => {
+                          setLoading({ loading: true, index: index })
+                          setScannedData({ ...scannedData, data: { scanResponse: dashData.data[index], folderNum: index } })
+                          history.push('/')
+                        }}
+                      >
+                        {loading && (loading.index === index) ? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} /> : <FontAwesomeIcon icon={faArrowCircleRight} />}
+                      </Button></div>
+                  </div>
                 </Card>
               </Col>
             </div>
