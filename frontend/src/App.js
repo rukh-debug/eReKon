@@ -19,9 +19,13 @@ import UserContext from './context/UserContext'
 import ScannedContext from "./context/ScannedContext"
 import DashContext from './context/DashContext'
 import ProgressContext from './context/ProgressContext'
-
+import ConfigContext from './context/ConfigContext'
 
 export default function App() {
+
+  const [configData, setConfigData] = useState({
+    scanType: undefined
+  })
 
   const [userData, setUserData] = useState({
     isLoading: true,
@@ -73,6 +77,21 @@ export default function App() {
 
   useEffect(() => {
 
+    const getConfig = async () => {
+      setConfigData({...configData})
+      let token = localStorage.getItem('auth-token');
+      let body = { token }
+      await axios.post(`http://localhost:5000/users/getConfig`, body, 
+      {
+        headers: {
+          "x-auth-token": token
+        }
+      }).then((res) => {
+        console.log(res)
+        setConfigData({...configData, scanType: res.data.scantype})
+      })
+    }
+
     const getDash = async () => {
       setDashData({ ...dashData, dashIsLoading: true })
 
@@ -123,6 +142,7 @@ export default function App() {
           user: userRes.data
         })
         await getDash();
+        await getConfig();
 
       }
       else {
@@ -138,10 +158,6 @@ export default function App() {
 
     checkLoggedIn();
 
-
-
-
-
   }, [])
 
   return (
@@ -149,6 +165,7 @@ export default function App() {
       <DashContext.Provider value={{ dashData, setDashData }}>
         <ProgressContext.Provider value={{ progressData, setProgressData }}>
           <ScannedContext.Provider value={{ scannedData, setScannedData }}>
+            <ConfigContext.Provider value={{ configData, setConfigData }}>
 
             <div>
               <Header />
@@ -172,8 +189,9 @@ export default function App() {
 
 
             </div>
-          </ScannedContext.Provider>
 
+            </ConfigContext.Provider>
+          </ScannedContext.Provider>
         </ProgressContext.Provider>
       </DashContext.Provider>
     </UserContext.Provider >
