@@ -94,15 +94,15 @@ export default function Dash() {
         <h4 className='text-muted mt-5'>Scan History</h4>
 
 
-        {dashData.data?.map((item, index) => {
+        {dashData?.data?.map((item, index) => {
           return (
-            <div key={index}>
+            <section key={index}>
               <Col className='ml-auto'>
                 <Card bg='dark'>
                   <div className="p-3 media d-flex justify-content-between">
                     <div><h1>{index + 1}.</h1></div>
                     <div>{getDomainFromArr(item)}</div>
-                    <div>scanType</div>
+                    <div>{item[index]?.scanType}</div>
                     <div className="d-flex flex-row"><h4>{item.length}&nbsp;</h4>Subdomains</div>
                     <div>
                       <Button
@@ -111,14 +111,13 @@ export default function Dash() {
                           setLoading({ loading: true, index: index })
                           setScannedData({ ...scannedData, data: { scanResponse: dashData.data[index], folderNum: index } })
                           history.push('/')
-                        }}
-                      >
+                        }}>
                         {loading && (loading.index === index) ? <FontAwesomeIcon className="fa-spin" icon={faCircleNotch} /> : <FontAwesomeIcon icon={faArrowCircleRight} />}
                       </Button></div>
                   </div>
                 </Card>
               </Col>
-            </div>
+            </section>
           )
         })}
 

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Row, Col, Card, Container, Form, InputGroup, FormControl } from 'react-bootstrap'
+import { Row, Col, Card, Container, Form, FormControl } from 'react-bootstrap'
 import UserContext from '../../context/UserContext'
 
 export default function Profile() {
@@ -16,9 +16,7 @@ export default function Profile() {
     <Container>
       <div className=' setting-container'>
         <h3 className='text-muted'>User Settings</h3>
-
         <Row>
-
           <Col className='col-4 row-input'>
             <Card bg="dark" className='card-container'>
               <img alt='profile pic' className='imageContainer' width="100" src="https://picsum.photos/200" />
@@ -40,7 +38,7 @@ export default function Profile() {
                     placeholder="https://example.com/"
                     value={userData.user.displayName}
                     onChange={(e) => {
-                      setUserData({...userData, user : {displayName : e.target.value}})
+                      setUserData({ ...userData, user: { displayName: e.target.value } })
                     }}
                   />
                 </div>
@@ -52,7 +50,7 @@ export default function Profile() {
                     placeholder="email"
                     value={userData.user.email}
                     onChange={(e) => {
-                      setUserData({...userData, user : {email : e.target.value}})
+                      setUserData({ ...userData, user: { email: e.target.value } })
                     }}
                   />
                 </div>

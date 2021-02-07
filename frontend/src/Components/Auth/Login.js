@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 import UserContext from "../../context/UserContext"
 import DashContext from "../../context/DashContext"
+import ConfigContext from '../../context/ConfigContext'
 import Loading from "../pages/Loading"
 
 
@@ -21,8 +22,24 @@ export default function Login() {
 
   const { setUserData, userData } = useContext(UserContext);
   const { dashData, setDashData } = useContext(DashContext);
+  const { configData, setConfigData } = useContext(ConfigContext)
 
   const submit = async (e) => {
+
+    const getConfig = async () => {
+
+      setConfigData({...configData})
+      let token = localStorage.getItem('auth-token');
+      let body = { token }
+      await axios.post(`http://localhost:5000/users/getConfig`, body, 
+      {
+        headers: {
+          "x-auth-token": token
+        }
+      }).then((res) => {
+        setConfigData({...configData, scanType: res.data.type})
+      })
+    }
 
     const getDash = async () => {
       setDashData({...dashData, dashIsLoading: true})
@@ -35,8 +52,8 @@ export default function Login() {
           }
         }
       ).then((res) => {
-        setDashData({...dashData, data: res.data.data, dashIsLoading: false})
         console.log(res.data.data)
+        setDashData({...dashData, data: res.data.data, dashIsLoading: false})
       }).catch((e) => {
         addToast(e.response.data.error, {
           appearance: "warning",
@@ -62,6 +79,7 @@ export default function Login() {
         })
         localStorage.setItem('auth-token', res.data.token)
         await getDash()
+        await getConfig()
         setLoading(false)
         history.push('/')
       })

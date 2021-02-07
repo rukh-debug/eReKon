@@ -7,6 +7,7 @@ import ScannedData from '../../../context/ScannedContext'
 import UserContext from "../../../context/UserContext"
 import DashContext from "../../../context/DashContext"
 import ProgressContext from '../../../context/ProgressContext'
+import ConfigContext from '../../../context/ConfigContext'
 import axios from 'axios'
 import Tables from "./Tables"
 import Progress from './Progress'
@@ -19,8 +20,23 @@ export default function Scanner() {
   const { dashData, setDashData } = useContext(DashContext)
   const { userData } = useContext(UserContext)
   const { progressData, setProgressData } = useContext(ProgressContext)
+  const { configData, setConfigData } = useContext(ConfigContext)
 
   const submit = async (e) => {
+
+    const getConfig = async () => {
+      setConfigData({...configData})
+      let token = localStorage.getItem('auth-token');
+      let body = { token }
+      await axios.post(`http://localhost:5000/users/getConfig`, body, 
+      {
+        headers: {
+          "x-auth-token": token
+        }
+      }).then((res) => {
+        setConfigData({...configData, scanType: res.data.type})
+      })
+    }
 
     const getDash = async () => {
       setDashData({ ...dashData, dashIsLoading: true })
@@ -99,6 +115,7 @@ export default function Scanner() {
     }
 
     getDash();
+    getConfig();
 
   }
   return (
@@ -112,7 +129,6 @@ export default function Scanner() {
               placeholder="https://example.com/"
               aria-label="Domain To Scan"
               value={progressData.domain}
-              disabled={progressData.start ? true: false}
               onChange={(e) => setProgressData({...progressData, domain: e.target.value})}
             />
 
