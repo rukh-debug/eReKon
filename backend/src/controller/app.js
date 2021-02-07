@@ -22,6 +22,7 @@ let compileToList = (data, headerInfo) => {
       let individualData = data[`${i}`]
       let individual = {
         id: i,
+        scanType: "fast",
         url: individualData[`url`],
         port: individualData[`port`],
         ip: individualData[`ip`],
