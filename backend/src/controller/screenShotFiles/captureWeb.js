@@ -11,7 +11,7 @@ const fse = require('fs-extra')
 process.setMaxListeners(0);
 let captureScreen = async (arr, uuid, folderNum) => {
 
-  let folderPath = `${__dirname}/../../../static/img/${uuid}/${folderNum}`
+  let folderPath = `${__dirname}/../../../static/user/${uuid}/img/${folderNum}`
   fse.ensureDirSync(folderPath)
 
   let arrDevide = []
