@@ -9,6 +9,7 @@ export default function Config() {
 
   let submit = () => {
     console.log('submit clicked')
+    setLoading(true)
   }
 
   const [scanType, setScanType] = useState(configData.scanType);
@@ -28,7 +29,7 @@ export default function Config() {
             <Container>
               <div className="card register-card">
                 <Row className="no-gutters">
-                  <div className="col-md-7 register-img-card" />
+                  <div className="col-md-7 config-img-card" />
                   <div className="col-md-3">
                     <Form className="card-body" onSubmit={submit}>
                       <div className="title-holder">

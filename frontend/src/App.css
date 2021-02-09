@@ -285,3 +285,11 @@ thead th {
   margin-left: auto;
   margin-right: auto;
 }
+
+.config-img-card{
+  background-image: url("./Assets/img/config.jpeg");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
