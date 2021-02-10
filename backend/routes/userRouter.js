@@ -8,7 +8,6 @@ const { v4: uuidv4 } = require('uuid');
 const app = require('../src/controller/app')
 const configModel = require('../models/configModel')
 const multer = require('multer')
-const upload = multer()
 
 router.post('/register', async (req, res) => {
   try {
@@ -152,7 +151,6 @@ router.post('/getConfig', auth, async (req, res) => {
     const { token } = req.body;
     let decoded = jwt.verify(token, process.env.JWT_SECRETS)
     const findUserData = await configModel.findOne({ userRef: decoded.id })
-    console.log(findUserData)
     res.status(200).json({
       scantype: findUserData.scanType
     })
@@ -161,6 +159,18 @@ router.post('/getConfig', auth, async (req, res) => {
     res.status(500).json({ msg: err.message })
   }
 })
+
+let storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    const UUID = req.header('uuid')
+    cb(null, `${__dirname}/../static/user/${UUID}`)
+  },
+  filename: function(req, file, cb){
+    cb(null, `wordlist.txt`)
+  }
+})
+
+let upload = multer({ storage: storage })
 
 router.post('/saveConfig', auth, async (req, res) => {
 
