@@ -94,7 +94,7 @@ router.post('/progress', async (req, res) => {
     if (findUserData) {
       let num = findUserData.scanData.length
       folderNum = num.toString()
-    }
+    } 
     else {
       folderNum = "0"
     }
