@@ -107,7 +107,7 @@ let wayback = async (url) => {
     wayback: urls
   }
 }
-
+ 
 // used in router
 let okUrl = async (url) => {
   // check if the given url is valid or not
