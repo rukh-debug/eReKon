@@ -2,6 +2,17 @@
 
 Yet another web recon tool But beautiful (not the code). 
 
+## sneak peek
+
+#### Landing page
+![landing](https://raw.githubusercontent.com/rubenkharel/eReKon/main/repoAssets/landing.png)
+#### Login/Register
+![login](https://raw.githubusercontent.com/rubenkharel/eReKon/main/repoAssets/login.png)
+#### Scanned data sample
+![Sample](https://raw.githubusercontent.com/rubenkharel/eReKon/main/repoAssets/scanner.png)
+#### Dashboard
+![Dash](https://raw.githubusercontent.com/rubenkharel/eReKon/main/repoAssets/dash.png)
+
 ## Features
 
 - Easy to find information like CVE, Port informations, Status infos, IP info.
