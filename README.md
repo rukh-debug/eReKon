@@ -72,7 +72,7 @@ I still dont know the D of docker. You can send PR if you are willing to create 
 
 Vulnerable af, host it only in private environment.
 
-Since, this was the first ever (maybe second, idk) project I built after learning Node.js, I believe its very messy with bad practices... so, it might make you go bang your head if you start doing code review.
+Since, this was the first ever (maybe second, idk) project I built after learning Node.js, I believe its very messy with bad practices... so, it might make you go bang your head on wall if you start doing code review.
 
 But I assure you this repo is very beginner friendly to get you started on opensource contribution.
 
