@@ -64,7 +64,7 @@ let processSocket = (uuid, folderNum, socket) => {
     socket.emit("FromAPI", jsonData)
   }
   catch(e){
-    socket.emit("FromAPI", {progressL:"IDLE", progressP:100})
+    socket.emit("FromAPI", {progressL:"Wait a sec...", progressP:100})
   }  
 }
 
