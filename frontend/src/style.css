@@ -22,7 +22,15 @@ body{
 }
 
 a{
-  color: aqua;
+  color: rgb(142, 201, 201);
+  text-decoration: unset;
+}
+a:hover {
+  color: rgb(122, 167, 167);
+  text-decoration: unset;
+}
+a:visited{
+  color: rgb(142, 201, 201);
   text-decoration: unset;
 }
 
