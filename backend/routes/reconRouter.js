@@ -33,9 +33,6 @@ router.post('/fast', auth, async (req, res) => {
     else {
       return res.status(400).json({ msg: `Cant connect to ${url}` })
     }
-
-
-    console.log('we came out')
     if (findUserData) {
       // update the database with new data
       const userScannedData = await ScannedData.findOneAndUpdate(
