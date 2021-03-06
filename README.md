@@ -19,14 +19,14 @@ Yet another web recon tool But beautiful (not the code).
 - Login/Register
 - Saves all the scans on database for later use
 - Smooth UX/UI
-#### Ease Scan
+#### Fast Scan
 - Subdomain Scanning (findomain)
 - PortScanning (evilscan)
 - Version Scanner (Wappalizer)
 - Screenshots (Puppeter iguess)
 
 #### Effective Scan (UNDERDEVELOPMENT)
-- All of the above from Easy scan
+- All of the above from Fast scan
 - Subdomain Bruteforce (ffuf) 
 - Directory scanning (??idk??) 
 #### Tech Used
