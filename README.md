@@ -30,8 +30,8 @@ Yet another web recon tool But beautiful (not the code).
 - Subdomain Bruteforce (ffuf) 
 - Directory scanning (??idk??) 
 #### Tech Used
-- React.js (Frontend)
-- Node.js (Backend)
+- React.js + Bootstrap (Frontend)
+- Node.js (Backend) REST API
 - MongoDB (Database)
 - Express (Server)
 
