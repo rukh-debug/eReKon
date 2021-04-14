@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react'
-import { Container, Row, Form, Alert, Button, Dropdown } from 'react-bootstrap'
+import { Container, Row, Form, Alert, Button, Dropdown, InputGroup, FormControl } from 'react-bootstrap'
 import ConfigContext from '../../context/ConfigContext'
 import Loading from './Loading';
 
 export default function Config() {
+
+  let reader = new FileReader();
 
   const { configData, setConfigData } = useContext(ConfigContext);
 
@@ -62,11 +64,23 @@ export default function Config() {
                         </Dropdown>
                       </Form.Group>
                       <Form.Group controlId="password">
-                        <Form.Label>Upload Wordlist (.txt)</Form.Label>
-                        <Form.File id="exampleFormControlFile1" />
+                        <Form.Label>Paste WordList(line break after each word)</Form.Label>
+                        <InputGroup>
+                          <FormControl 
+                          as="textarea" 
+                          aria-label="With textarea" 
+                          placeholder="www\n
+                          api\n
+                          app\n
+                          admin\n
+                          staging\n
+                          etc...\n
+                          "
+                          />
+                        </InputGroup>
                       </Form.Group>
                       <Button variant="info" type="submit" >
-                        {loading ? "Save" : "Saving..."}
+                        {loading ? "Saving..." : "Save"}
                       </Button>
                     </Form>
                   </div>

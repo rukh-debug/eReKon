@@ -16,7 +16,7 @@ export default function AuthNav() {
           <Nav className="ml-auto" navbar>
             <NavDropdown title={<FontAwesomeIcon icon={faUser} />} id="basic-nav-dropdown">
               <NavDropdown.Item as={Link} to="/config">Config</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/setting">Settings</NavDropdown.Item>
+              {/* <NavDropdown.Item as={Link} to="/setting">Settings</NavDropdown.Item> */}
               <NavDropdown.Divider />
               <NavDropdown.Item as={Link} to="/logout">Logout</NavDropdown.Item>
             </NavDropdown>
