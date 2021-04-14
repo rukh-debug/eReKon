@@ -19,19 +19,19 @@ Yet another web recon tool But beautiful (not the code).
 - Login/Register
 - Saves all the scans on database for later use
 - Smooth UX/UI
-#### Ease Scan
+#### Fast Scan
 - Subdomain Scanning (findomain)
 - PortScanning (evilscan)
 - Version Scanner (Wappalizer)
 - Screenshots (Puppeter iguess)
 
 #### Effective Scan (UNDERDEVELOPMENT)
-- All of the above from Easy scan
+- All of the above from Fast scan
 - Subdomain Bruteforce (ffuf) 
 - Directory scanning (??idk??) 
 #### Tech Used
-- React.js (Frontend)
-- Node.js (Backend)
+- React.js + Bootstrap (Frontend)
+- Node.js (Backend) REST API
 - MongoDB (Database)
 - Express (Server)
 
@@ -72,7 +72,7 @@ I still dont know the D of docker. You can send PR if you are willing to create 
 
 Vulnerable af, host it only in private environment.
 
-Since, this was the first ever (maybe second, idk) project I built after learning Node.js, I believe its very messy with bad practices... so, it might make you go bang your head if you start doing code review.
+Since, this was the first ever (maybe second, idk) project I built after learning Node.js, I believe its very messy with bad practices... so, it might make you go bang your head on wall if you start doing code review.
 
 But I assure you this repo is very beginner friendly to get you started on opensource contribution.
 
