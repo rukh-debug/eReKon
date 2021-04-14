@@ -6,8 +6,9 @@ const jwt = require("jsonwebtoken")
 const auth = require("../middleware/auth")
 const { v4: uuidv4 } = require('uuid');
 const app = require('../src/controller/app')
-const configModel = require('../models/configModel')
 const multer = require('multer')
+const fse = require('fs-extra')
+const fs = require('fs')
 
 router.post('/register', async (req, res) => {
   try {
@@ -160,34 +161,63 @@ router.post('/getConfig', auth, async (req, res) => {
   }
 })
 
-let storage = multer.diskStorage({
-  destination: function(req, file, cb){
-    const UUID = req.header('uuid')
-    cb(null, `${__dirname}/../static/user/${UUID}`)
-  },
-  filename: function(req, file, cb){
-    cb(null, `wordlist.txt`)
-  }
-})
+// let storage = multer.diskStorage({
+//   destination: function(req, file, cb){
+//     const UUID = req.header('uuid')
+//     cb(null, `${__dirname}/../static/user/${UUID}`)
+//   },
+//   filename: function(req, file, cb){
+//     cb(null, `wordlist.txt`)
+//   }
+// })
 
-let upload = multer({ storage: storage })
+let saveFileToLocal = async (b64encode, userUUID) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(`${__dirname}/../static/user/${userUUID}/wordlist.txt`, b64encode, 'base64', function (err) {
+      console.log(err)
+      resolve()
+    })
+  })
+}
 
 router.post('/saveConfig', auth, async (req, res) => {
 
-  const token = req.header('x-auth-token')
-  const scanType = req.header('scan-type')
-  
-  // validate...
-  if (!scanType === 'fast' || !scanType === 'effective') {
-    res.status(401).json({ error: "Invalid scanmode option" })
+  try {
+    const token = req.header('x-auth-token')
+    const scanType = req.header('scan-type')
+    const b64 = req.body.b64Enc
+
+    // validate...
+    if (!scanType === 'fast' || !scanType === 'effective') {
+      res.status(401).json({ error: "Invalid scanmode option" })
+    }
+
+    let decoded = jwt.verify(token, process.env.JWT_SECRETS)
+
+    const findUserData = await Config.findOne({ userRef: decoded.id })
+
+    const findUser = await User.findOne({ _id: decoded.id })
+    let uuid = findUser.uuid
+
+    if (b64) {
+      await saveFileToLocal(b64, uuid)
+    }
+
+    if (!findUserData) {
+      const configData = new Config({
+        userRef: savedUser.id,
+        scanType: scanType
+      })
+      await configData.save();
+      res.status(200).json({ message: "Created and Saved!!!" })
+    } else {
+      findUserData.scanType = scanType;
+      await findUserData.save()
+      res.status(200).json({ message: "Updated" })
+    }
+  } catch (e) {
+    return res.status(500).json({ error: "internal server error", e: e.message })
   }
-
-  let decoded = jwt.verify(token, process.env.JWT_SECRETS)
-
-  const findUserData = await configModel.findOne({ userRef: decoded.id })
-
-
 })
-
 
 module.exports = router;
