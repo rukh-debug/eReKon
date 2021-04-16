@@ -1,34 +1,25 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap'
-import ScannedContext from "../../../context/ScannedContext"
-import UserContext from '../../../context/UserContext'
 import ProgressContext from '../../../context/ProgressContext'
-import DashContext from '../../../context/DashContext'
-import axios from 'axios'
 import sockerIOClient from 'socket.io-client'
 
 const Progress = () => {
-
-  const { userData } = useContext(UserContext);
   const { progressData, setProgressData } = useContext(ProgressContext)
-  const { dashData } = useContext(DashContext)
 
+  let endpoint = `http://localhost:5001`;
+  const socket = sockerIOClient(endpoint);
+  let roomName = 'eReKon'
+  socket.emit('login', roomName, error => {
+    if (error){
+      console.log('cannot connect to room for some reason')
+    }
+    console.log(`Connected to ${roomName}`)
+  })
 
   useEffect(() => {
-    let endpoint = `http://localhost:5001`;
-    const socket = sockerIOClient(endpoint);
-
-    let emitData = () => {
-      socket.emit("UUIDnDirNum", { uuid: userData.user.uuid, folderNum: dashData.data ? dashData.data.length ? dashData.data.length : 0 : 0 })
-    }
-    const interval = setTimeout(emitData, 3000)
-    socket.on('FromAPI', data => {
-      setProgressData({...progressData, per: data.progressP, label: data.progressL})
+    socket.on('progress', fetchedData => {
+      setProgressData({...progressData, ...fetchedData})
     })
-    return () => {
-      socket.disconnect()
-      clearInterval(interval)
-    }
   })
 
   return (
@@ -36,8 +27,8 @@ const Progress = () => {
       <ProgressBar
         className="shadow-scan animate__animated animate__zoomIn"
         animated
-        now={progressData.per}
-        label={progressData.label} />
+        now={progressData.per ? progressData.per : 100}
+        label={progressData.what? progressData.what : "Starting"} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-
+const User = require('../models/userModel')
 const auth = async (req, res, next) => {
 
   try {
@@ -16,6 +16,10 @@ const auth = async (req, res, next) => {
         .status(401)
         .json({ msg: "Token verification failed, auth denied" });
     }
+
+    // let userData = await User.fineById(verified.id)
+    // console.log(userData)
+    // req.userInfo = userData
     req.user = verified.id;
     next();
   }

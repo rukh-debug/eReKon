@@ -151,7 +151,7 @@ router.post('/getConfig', auth, async (req, res) => {
   try {
     const { token } = req.body;
     let decoded = jwt.verify(token, process.env.JWT_SECRETS)
-    const findUserData = await configModel.findOne({ userRef: decoded.id })
+    const findUserData = await Config.findOne({ userRef: decoded.id })
     res.status(200).json({
       scantype: findUserData.scanType
     })

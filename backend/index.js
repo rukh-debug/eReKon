@@ -56,26 +56,13 @@ const socketServer = io(server, { cors: { origin: "*" } })
 const socketPort = 5001
 server.listen(socketPort, () => console.log(`Socket on ${socketPort}`))
 
-let processSocket = (uuid, folderNum, socket) => {
-  try {
-    let raw = fs.readFileSync(`${__dirname}/static/user/${uuid}/img/${folderNum}/progress.json`)
-    let jsonData = JSON.parse(raw)
-    console.log(jsonData)
-    socket.emit("FromAPI", jsonData)
-  }
-  catch(e){
-    socket.emit("FromAPI", {progressL:"Wait a sec...", progressP:100})
-  }  
-}
-
-socketServer.on("connection", (socket) => {
-  // processSocket(uuid, folderNum, socket), 1000);
-  // socketServer.on("Disconnect", () => {
-  //   console.log("client disconnected");
-  //   clearInterval(interval);
-  // });
-  socket.on('UUIDnDirNum', (data) => {
-    processSocket(data.uuid, data.folderNum, socket)
+socketServer.on("connection", async (socket) => {
+  socket.on('login', function (room) {
+    socket.join(room);
+    console.log(`loggedIn to the room: ${room}`);
   })
-});
+})
 
+module.exports.socketService = (eventName, data, roomName) => {
+  socketServer.to(roomName).emit(eventName, data);
+}

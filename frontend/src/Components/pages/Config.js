@@ -100,7 +100,7 @@ export default function Config() {
                           }
                           id="dropdown-basic"
                         >
-                          {scanType}
+                          {scanType ? scanType : "Choose"}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu>

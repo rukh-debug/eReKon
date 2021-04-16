@@ -10,8 +10,9 @@ const portNdetails = require("./portScanning/detailer.js");
 const wappalizer = require("./versionScan/detailer.js");
 const headerData = require("./scraping/scrapTitles.js");
 const fse = require("fs-extra");
-const progress = require("./progress");
 const { isValidObjectId } = require("mongoose");
+
+const socketService = require('../../index')
 
 let compileToList = (data, headerInfo) => {
   return new Promise(async (res, rej) => {
@@ -44,47 +45,39 @@ let compileToList = (data, headerInfo) => {
   });
 };
 
-let domainsInfoFast = async (url, uuid, folderNum) => {
-  await progress.start(uuid, folderNum);
-  await progress.update(uuid, `Scanning Subdomains(1/7)`, 20, folderNum);
-
+let domainsInfoFast = async (url, roomName, folderNum, uuid) => {
+  console.log(uuid)
+  await socketService.socketService('progress', {what: "Subdomains(1/7)", per: 20}, roomName)
   //use finddomain bin file to scan all the doamins, returns nothing, creates a text file with subdomains.
-	
-  console.log(`[Subdomains]: Gathering subdomains`);
-
   await subdomains.get(url);
   //filtering valid
 
-  progress.update(uuid, `HTTProbe (2/7)`, 30, folderNum);
-  console.log(`[HTTProbe]: Httprober probing`);
+  await socketService.socketService('progress', {what: "HTTProbe(2/7)", per: 20}, roomName)
   let validUrls = await validUrl.prober();
 
   // scan every 200 status code url with top 20 ports
-
-  progress.update(uuid, `Scanning Ports (3/7)`, 45, folderNum);
-  console.log(`[Port]: Gathering Port`);
+  await socketService.socketService('progress', {what: "Scanning Ports (3/7)", per: 45}, roomName)
   let portMixed = await portNdetails.get(validUrls, "fast");
-  //get all the tech info from wappalizer
 
-  progress.update(uuid, `Scanning Versions (4/7)`, 60, folderNum);
-  console.log(`[Wappalizer]: Gathering Versions`);
+  //get all the tech info from wappalizer
+  await socketService.socketService('progress', {what: "Scanning Versions (4/7)", per: 60}, roomName)
   let mixWithVersion = await wappalizer.getAndMerge(validUrls, portMixed);
 
   // header informations
-  progress.update(uuid, `Getting headers (5/7)`, 80, folderNum);
+  await socketService.socketService('progress', {what: "Getting headers (5/7)", per: 80}, roomName)
   let headerInfo = await headerData.get(validUrls);
 
   //capturing webpages
-  progress.update(uuid, `Capturing webPages (6/7)`, 90, folderNum);
-  console.log(`[Capture]: Capturing Pages`);
+  await socketService.socketService('progress', {what: "Capturing webPages (6/7)", per: 90}, roomName)
   await screenCapture.convert(validUrls, uuid, folderNum);
 
   // putting it to list
-  progress.update(uuid, `Compiling Everything (7/7)`, 99, folderNum);
+  await socketService.socketService('progress', {what: "Compiling Everything (7/7)", per: 98}, roomName)
   let result = await compileToList(mixWithVersion, headerInfo);
   // after all the above tasks are complete returns the below object
-  progress.update(uuid, `Scan Complete`, `100`, folderNum);
+  await socketService.socketService('progress', {what: "Scan Complete", per: 100}, roomName)
   return result;
+
 };
 
 // unused
