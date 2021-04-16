@@ -49,11 +49,11 @@ let compileToList = (data, headerInfo, scanType) => {
 let domainsInfoFast = async (url, roomName, folderNum, uuid, scanType) => {
   await socketService.socketService('progress', { what: "Subdomains(1/7)", per: 20 }, roomName)
 
-  await domainBrute(url, uuid)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err))
   //use finddomain bin file to scan all the doamins, returns nothing, creates a text file with subdomains.
   await subdomains.get(url);
+  if (scanType === 'effective') {
+    await domainBrute(url, uuid)
+  }
   //filtering valid
 
   await socketService.socketService('progress', { what: "HTTProbe(2/7)", per: 20 }, roomName)
