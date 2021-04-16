@@ -17,17 +17,13 @@ export default function Dash() {
   const { userData } = useContext(UserContext)
   const { scannedData, setScannedData } = useContext(ScannedContext)
 
-  let totalSubdomains = 9
+  let totalSubdomains = 4
 
   let getDomainFromArr = (arr) => {
     let firstItem = arr[0]
     let url = new URL(firstItem.url)
     return url.host
   }
-
-  // let getScanType = (arr) => {
-  //   let scanType = 
-  // }
 
   if (userData.isLoading) {
     return (
@@ -36,14 +32,6 @@ export default function Dash() {
       </>
     )
   }
-
-  //else if (!dashData.data) {
-  //  return (
-  //    <>
-  //      Sorry you have no data
-  //    </>
-  //  )
-  //}
 
   else {
     return (<>
@@ -93,7 +81,6 @@ export default function Dash() {
         </Row>
         <h4 className='text-muted mt-5'>Scan History</h4>
 
-
         {dashData?.data?.map((item, index) => {
           return (
             <section key={index}>
@@ -120,9 +107,6 @@ export default function Dash() {
             </section>
           )
         })}
-
-
-
 
       </Container>
     </>

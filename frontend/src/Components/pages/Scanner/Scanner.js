@@ -15,8 +15,8 @@ export default function Scanner() {
 
   const { addToast } = useToasts()
 
-  const [scanning, setScanning] = (false)
-  const [domain, setDomain] = (null)
+  const [scanning, setScanning] = useState(false)
+  const [domain, setDomain] = useState(null)
 
   const { scannedData, setScannedData } = useContext(ScannedData)
   const { dashData, setDashData } = useContext(DashContext)

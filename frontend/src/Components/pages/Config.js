@@ -64,7 +64,7 @@ export default function Config() {
         setLoading(false)
       })
       .catch(function (error) {
-        addToast(error.response.data.error, {
+        addToast(error.response.data.message, {
           appearance: 'warning',
           autoDismiss: true,
         })
