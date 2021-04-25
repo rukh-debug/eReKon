@@ -88,7 +88,7 @@ export default function Scanner() {
       console.log(e)
       setScanning(false)
       try {
-        addToast(`API error from backend ${e}`, {
+        addToast(`Sorry bad url`, {
           appearance: "warning",
           autoDismiss: true,
         })

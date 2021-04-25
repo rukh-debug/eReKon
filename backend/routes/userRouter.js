@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken")
 const auth = require("../middleware/auth")
 const { v4: uuidv4 } = require('uuid');
 const app = require('../src/controller/app')
-const multer = require('multer')
 const fse = require('fs-extra')
 const fs = require('fs')
 

@@ -1,8 +1,1 @@
-Found: mail.worldlink.com.np
-Found: www.worldlink.com.np
-Found: autodiscover.worldlink.com.np
-Found: blog.worldlink.com.np
-Found: mx.worldlink.com.np
-Found: beta.worldlink.com.np
-Found: static.worldlink.com.np
-Found: ssl.worldlink.com.np
+Found: www.rubenk.com.np
