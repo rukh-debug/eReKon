@@ -6,7 +6,7 @@ import App from './App'
 import "./style.css"
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-axios.defaults.baseURL = 'http://54.162.239.188:5000'
+axios.defaults.baseURL = 'https://api.erekon.co'
 
 ReactDom.render(
   <BrowserRouter>
