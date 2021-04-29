@@ -31,7 +31,7 @@ export default function Register() {
     else {
       newUser = { email, password, passwordCheck, displayName };
     }
-    await axios.post("http://localhost:5000/users/register", newUser)
+    await axios.post("/users/register", newUser)
       .then((res) => {
         addToast("Success", {
           appearance: 'success',

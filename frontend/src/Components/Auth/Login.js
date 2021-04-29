@@ -31,7 +31,7 @@ export default function Login() {
       setConfigData({...configData})
       let token = localStorage.getItem('auth-token');
       let body = { token }
-      await axios.post(`http://localhost:5000/users/getConfig`, body, 
+      await axios.post(`/users/getConfig`, body, 
       {
         headers: {
           "x-auth-token": token
@@ -45,7 +45,7 @@ export default function Login() {
       setDashData({...dashData, dashIsLoading: true})
       let token = localStorage.getItem("auth-token");
       let body = { token }
-      await axios.post(`http://localhost:5000/recon/dash`, body,
+      await axios.post(`/recon/dash`, body,
         {
           headers: {
             "x-auth-token": token
@@ -67,7 +67,7 @@ export default function Login() {
     let user;
     setLoading(true)
     user = { email, password }
-    await axios.post("http://localhost:5000/users/login", user)
+    await axios.post("/users/login", user)
       .then( async (res) => {
         addToast("Successfully Logged In", {
           appearance: 'success',

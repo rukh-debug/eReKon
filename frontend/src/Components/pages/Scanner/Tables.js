@@ -32,7 +32,7 @@ const Tables = (props) => {
   }
 
   let imgSrc = (uuid, folderNum, index) => {
-    return `http://localhost:5000/user/${uuid}/img/${folderNum}/${index}.png`
+    return `http://54.162.239.188:5000/user/${uuid}/img/${folderNum}/${index}.png`
   }
 
   const year = new Date().getFullYear()

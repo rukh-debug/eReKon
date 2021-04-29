@@ -44,7 +44,7 @@ export default function Config() {
 
     var config = {
       method: "post",
-      url: "http://localhost:5000/users/saveConfig",
+      url: "/users/saveConfig",
       headers: {
         "x-auth-token": token,
         "scan-type": scanType,

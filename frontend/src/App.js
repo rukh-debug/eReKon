@@ -81,7 +81,7 @@ export default function App() {
       setConfigData({...configData})
       let token = localStorage.getItem('auth-token');
       let body = { token }
-      await axios.post(`http://localhost:5000/users/getConfig`, body, 
+      await axios.post(`/users/getConfig`, body, 
       {
         headers: {
           "x-auth-token": token
@@ -97,7 +97,7 @@ export default function App() {
 
       let token = localStorage.getItem("auth-token");
       let body = { token }
-      await axios.post(`http://localhost:5000/recon/dash`, body,
+      await axios.post(`/recon/dash`, body,
         {
           headers: {
             "x-auth-token": token
@@ -119,7 +119,7 @@ export default function App() {
       }
 
       // check if the token is still valid
-      const tokenRes = await axios.post('http://localhost:5000/users/tokenIsValid', null,
+      const tokenRes = await axios.post('/users/tokenIsValid', null,
         {
           headers: {
             "x-auth-token": token
@@ -129,7 +129,7 @@ export default function App() {
       // if token was success, get userinfo from that
       if (tokenRes.data) {
         await addToLocal(token)
-        const userRes = await axios.get("http://localhost:5000/users/",
+        const userRes = await axios.get("/users/",
           {
             headers: {
               "x-auth-token": token

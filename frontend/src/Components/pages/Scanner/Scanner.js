@@ -29,7 +29,7 @@ export default function Scanner() {
       setConfigData({ ...configData })
       let token = localStorage.getItem('auth-token');
       let body = { token }
-      await axios.post(`http://localhost:5000/users/getConfig`, body,
+      await axios.post(`/users/getConfig`, body,
         {
           headers: {
             "x-auth-token": token
@@ -43,7 +43,7 @@ export default function Scanner() {
       setDashData({ ...dashData, dashIsLoading: true })
       let token = userData.token
       let body = { token }
-      await axios.post(`http://localhost:5000/recon/dash`, body,
+      await axios.post(`/recon/dash`, body,
         {
           headers: {
             "x-auth-token": userData.token
@@ -67,7 +67,7 @@ export default function Scanner() {
     let socketRoom = 'eReKon'
     let body = { token, url, socketRoom }
     try {
-      const { data } = await axios.post("http://localhost:5000/recon/fullscan",
+      const { data } = await axios.post("/recon/fullscan",
         body,
         {
           headers: {

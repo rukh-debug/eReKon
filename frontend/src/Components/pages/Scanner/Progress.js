@@ -6,7 +6,7 @@ import sockerIOClient from 'socket.io-client'
 const Progress = () => {
   const { progressData, setProgressData } = useContext(ProgressContext)
 
-  let endpoint = `http://localhost:5001`;
+  let endpoint = `http://54.162.239.188:5001`;
   const socket = sockerIOClient(endpoint);
   let roomName = 'eReKon'
   socket.emit('login', roomName, error => {
