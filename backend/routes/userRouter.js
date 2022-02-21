@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
 const auth = require("../middleware/auth")
 const { v4: uuidv4 } = require('uuid');
-const app = require('../src/controller/app')
+const app = require('../src/controller/indexController')
 const fse = require('fs-extra')
 const fs = require('fs')
 
@@ -18,25 +18,38 @@ router.post('/register', async (req, res) => {
     if (!email || !password || !passwordCheck) {
       return res
         .status(401)
-        .json({ msg: "Make sure all fields are entered" });
+        .json({
+          ok: false,
+          msg: "Make sure all fields are entered"
+        });
     }
     if (password.length < 5) {
       return res
         .status(401)
-        .json({ msg: "Password needs to be atleast 5 char long" })
+        .json({ 
+          ok: false,
+          msg: "Password needs to be atleast 5 char long" 
+        })
     }
     if (password !== passwordCheck) {
       return res
         .status(401)
-        .json({ msg: "Password doesnot match" })
+        .json({ 
+          ok: false,
+          msg: "Password doesnot match" 
+        })
     }
     const existingUser = await User.findOne({ email: email })
     if (existingUser) {
       return res
         .status(401)
-        .json({ msg: "Account with this email already exists" });
+        .json({ 
+          ok: false,
+          msg: "Account with this email already exists" 
+        });
     }
-    if (!displayName) displayName = email;
+    // split email into username 
+    if (!displayName) displayName = email.split("@")[0];
 
     const salt = await bcrypt.genSalt(10)
     const passwordHash = await bcrypt.hash(password, salt);
@@ -49,15 +62,8 @@ router.post('/register', async (req, res) => {
       displayName,
       uuid,
     });
-
     const savedUser = await newUser.save();
-    const configData = new Config({
-      userRef: savedUser.id,
-      scanType: "fast"
-    })
-    await configData.save();
     res.status(200).json(savedUser)
-
   }
   catch (e) {
     res.status(500).json({ error: e.message })
