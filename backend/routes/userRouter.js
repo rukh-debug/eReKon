@@ -26,26 +26,26 @@ router.post('/register', async (req, res) => {
     if (password.length < 5) {
       return res
         .status(401)
-        .json({ 
+        .json({
           ok: false,
-          msg: "Password needs to be atleast 5 char long" 
+          msg: "Password needs to be atleast 5 char long"
         })
     }
     if (password !== passwordCheck) {
       return res
         .status(401)
-        .json({ 
+        .json({
           ok: false,
-          msg: "Password doesnot match" 
+          msg: "Password doesnot match"
         })
     }
     const existingUser = await User.findOne({ email: email })
     if (existingUser) {
       return res
         .status(401)
-        .json({ 
+        .json({
           ok: false,
-          msg: "Account with this email already exists" 
+          msg: "Account with this email already exists"
         });
     }
     // split email into username 
@@ -63,7 +63,11 @@ router.post('/register', async (req, res) => {
       uuid,
     });
     const savedUser = await newUser.save();
-    res.status(200).json(savedUser)
+    res.status(200).json({
+      ok: true,
+      msg: "User created successfully",
+      ...savedUser,
+    })
   }
   catch (e) {
     res.status(500).json({ error: e.message })
@@ -78,27 +82,38 @@ router.post("/login", async (req, res) => {
     // validate
     if (!email || !password) {
       return res
-        .status(400)
-        .json({ msg: "Not all fields are filled" });
+        .status(401)
+        .json({
+          ok: false,
+          msg: "Not all fields are filled"
+        });
     }
 
     const user = await User.findOne({ email: email });
     if (!user) {
       return res
-        .status(400)
-        .json({ msg: "No account with this user exist" });
+        .status(401)
+        .json({
+          ok: false,
+          msg: "No account with this user exist"
+        });
     }
 
     const isMatched = await bcrypt.compare(password, user.password);
 
     if (!isMatched) {
       return res
-        .status(400)
-        .json({ msg: "Invalid credencials." })
+        .status(401)
+        .json({
+          ok: false,
+          msg: "Invalid credencials."
+        })
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRETS);
     res.json({
+      ok: true,
+      message: "User logged in successfully",
       token,
       user: {
         id: user._id,
@@ -109,18 +124,11 @@ router.post("/login", async (req, res) => {
     })
   }
   catch (e) {
-    res.status(500)
-      .json({ error: e.message })
-  }
-})
-
-router.delete("/delete", auth, async (req, res) => {
-  try {
-    const deleteUser = await User.findByIdAndDelete(req.user)
-    res.json(deleteUser);
-  }
-  catch (e) {
-    res.status(500).json({ error: err.message });
+    res.status(501)
+      .json({
+        ok: false,
+        msg: e.message
+      })
   }
 })
 
