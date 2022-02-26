@@ -29,7 +29,7 @@
     "express-easy-zip": "^1.1.5",
     "fs-extra": "^9.1.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.12",
+    "mongoose": "^5.13.14",
     "python-shell": "^2.0.3",
     "socket.io": "^3.1.0",
     "uuid": "^8.3.2",
