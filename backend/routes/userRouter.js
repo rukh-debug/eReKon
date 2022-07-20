@@ -132,21 +132,32 @@ router.post("/login", async (req, res) => {
   }
 })
 
-router.post('/tokenIsValid', async (req, res) => {
+router.get('/isTokenValid', async (req, res) => {
   try {
     const token = req.header("x-auth-token");
-    if (!token) return res.json(false);
+    if (!token) return res.status(401).json({
+      ok: false
+    });
 
     const verified = jwt.verify(token, process.env.JWT_SECRETS)
-    if (!verified) return res.json(false);
+    if (!verified) return res.status(401).json({
+      ok: false
+    })
 
     const user = await User.findById(verified.id);
-    if (!user) return res.json(false);
+    if (!user) return res.status(401).json({
+      ok: false
+    })
 
-    return res.json(true)
+    return res.status(200).json({
+      ok: true
+    })
   }
   catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(501).json({
+      ok: false,
+      msg: err.message,
+    })
   }
 })
 

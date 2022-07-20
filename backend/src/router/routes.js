@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const mainApp = require('../controller/app.js')
+const mainApp = require('../controller/indexController.js')
 
 router.get('/status', async (req, res) => {
   console.log(`Checkng status`)

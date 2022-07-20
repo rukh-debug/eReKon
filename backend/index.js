@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const path = require('path')
 const cors = require('cors');
@@ -12,9 +13,11 @@ require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 //////////////////////
 
 const app = express();
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(express.static('static'))
-// enable middleware
-app.use(express.json());
+// app.use(express.json());
 app.use(cors());
 
 // if we have env variable, if not port to 5000

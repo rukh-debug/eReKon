@@ -11,31 +11,27 @@ function promiseFromChildProcess(child) {
   });
 }
 
-let prober = async () => {
+let prober = async (domainName) => {
   return new Promise((resolve, reject) => {
-
-    let child = cp.execFileSync(`${__dirname}/runner.bash`)
+    let child = cp.execFileSync(`${__dirname}/runner.bash`, [domainName]);
     promiseFromChildProcess(child)
       .then((result) => {
-
-        let filename = `${__dirname}/output.txt`
-        // after the command succesfully runs
-        // console.log(`stdout: ${stdout}`)
+        let filename = `${__dirname}/${domainName}.txt`
         fs.readFile(filename, 'utf8', function (err, data) {
+          console.log(data)
           if (err) {
             reject(err);
           };
-          // split the textfile into array
           let splitted = data.split('\n');
-          console.log(splitted)
-          // resolve the splited array
           resolve(splitted);
         })
-
       })
   })
-
 };
+
+prober('register.com')
+  .then((res) => { console.log(res) })
+  .catch((err) => { console.log(err) })
 
 
 exports.prober = prober

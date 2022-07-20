@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const UserModel = require('../models/userModel')
 const ConfigModel = require('../models/configModel')
 //const scanResponse = require('../sample.json')
-const app = require('../src/controller/app')
+const app = require('../src/controller/indexController')
 const auth = require('../middleware/auth')
 
 router.post('/fullscan', auth, async (req, res) => {

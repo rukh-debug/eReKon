@@ -20,7 +20,9 @@ const auth = async (req, res, next) => {
     // let userData = await User.fineById(verified.id)
     // console.log(userData)
     // req.userInfo = userData
-    req.user = verified.id;
+    req.user_id = verified.id;
+    req.user = verified
+
     next();
   }
   catch (e) {
