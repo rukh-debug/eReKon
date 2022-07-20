@@ -24,7 +24,7 @@
     "cheerio": "^1.0.0-rc.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "evilscan": "^1.7.5",
+    "evilscan": "^1.7.9",
     "express": "^4.17.1",
     "express-easy-zip": "^1.1.5",
     "fs-extra": "^9.1.0",
