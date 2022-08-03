@@ -72,6 +72,9 @@ web_modules/
 .env
 .env.test
 
+### OSX ###
+*.DS_Store
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
