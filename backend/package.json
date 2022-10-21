@@ -23,7 +23,7 @@
     "capture-website": "^2.4.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.3",
     "evilscan": "^1.9.1",
     "express": "^4.18.1",
     "express-easy-zip": "^1.1.5",
