@@ -1,0 +1,24 @@
+POST http://localhost:9999/user/signup
+Content-Type: application/json
+
+{
+  "username": "howard",
+  "email": "kharelruben@gmail.com",
+  "password": "password"
+}
+
+###
+
+POST http://localhost:9999/user/login
+Content-Type: application/json
+
+{
+  "email": "kharelruben@gmail.com",
+  "password": "password"
+}
+
+###
+
+GET http://localhost:9999/user/64332cceda80b89caf3d4f45
+
+###

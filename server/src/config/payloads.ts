@@ -1,0 +1,1 @@
+export const possibleRedirects = ["?url=", "?redirect=", "?u=", "?forward=", "?next=", "?r=", "?link=", "?to=", "?target=", "?dest=", "?destination=", "?go=", "?out=", "?view=", "?jump=", "?ref=", "?src=", "?source=", "?return=", "?returnTo="]

@@ -1,16 +1,30 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config(
+  {
+    path: ".env"
+  }
+);
+
+import express from "express";
+
 import { connect } from "./config/db";
 import cors from "cors";
 
-dotenv.config();
+import { routes } from "./routes";
 
-connect();
+(async () => {
+  try {
+    await connect();
+  } catch (error) {
+    console.log(error);
+  }
+})();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
+app.use(routes);
 
 const port = process.env.PORT || 3000;
 
