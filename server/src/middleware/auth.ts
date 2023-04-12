@@ -8,7 +8,7 @@ interface AuthRequest extends Request {
 
 export const userAuth = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.header('Authorization')?.split(' ')[1];
     if (!token) throw new Error('Please authenticate');
     const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET as string);
 
@@ -20,10 +20,12 @@ export const userAuth = async (req: AuthRequest, res: Response, next: NextFuncti
 
     next();
   } catch (error: any) {
+    console.log(error);
     res.status(401).json({
       status: 'error',
       message: error.message,
     })
   }
 }
+
 

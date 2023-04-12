@@ -12,13 +12,17 @@ import cors from "cors";
 
 import { routes } from "./routes";
 
-(async () => {
-  try {
-    await connect();
-  } catch (error) {
-    console.log(error);
-  }
-})();
+try {
+  (async () => {
+    try {
+      await connect();
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+} catch (error) {
+  console.log(error);
+}
 
 const app = express();
 app.use(cors());
