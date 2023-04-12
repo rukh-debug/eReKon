@@ -25,7 +25,6 @@ export class wappalyzerService {
             driver.analyze().then(async (result: any) => {
               await wappalyzer.destroy();
               let finalResult = []
-              console.log(result)
               if (result.technologies.length !== 0) {
                 for (const item of result.technologies) {
                   finalResult.push({

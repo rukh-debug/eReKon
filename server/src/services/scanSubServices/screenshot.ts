@@ -1,20 +1,29 @@
 import Puppeteer from 'puppeteer';
 import path from 'path';
+import { extraService } from './extra';
 
 export class puppeteerService {
-  static async screenshot(url: string, userId: string, scanId: string) {
+  static async screenshot(url: string, userId: string, scanId: string, viewPort: string, home: boolean = true) {
     return new Promise(async (resolve, reject) => {
       try {
         const browser = await Puppeteer.launch({
           headless: true,
           args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          ignoreHTTPSErrors: true,
         });
         const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, {
+          waitUntil: 'networkidle0',
+          timeout: 60000,
+        });
+        const viewport = viewPort.split('x');
+        await page.setViewport({
+          width: parseInt(viewport[0]),
+          height: parseInt(viewport[1]),
+        });
+        let domain_name = await extraService.fetchDomain(url);
         const screenshot = await page.screenshot({
-          // set path to static folder in format userid/scanid/default.png
-          // const dir = path.join(__dirname, '..', 'static', user._id.toString(), scan._id.toString());
-          path: path.join(__dirname, '..', '..', '..', 'static', userId, scanId, 'default.png'),
+          path: path.join(__dirname, '..', '..', 'static', userId, scanId, home ? 'home.png' : `${domain_name}.png`),
           fullPage: false,
         });
         await browser.close();
@@ -26,22 +35,18 @@ export class puppeteerService {
     })
   }
 
-  static async screenShotBulk(urls: string[]) {
+  static async screenshotBulk(urls: string[], userId: string, scanId: string, viewPort: string) {
     return new Promise(async (resolve, reject) => {
       try {
-        const browser = await Puppeteer.launch({
-          headless: true,
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        });
-        const page = await browser.newPage();
-        let screenshots: any[] = []
-        for (let url of urls) {
-          await page.goto(url, { waitUntil: 'networkidle2' });
-          const screenshot = await page.screenshot({ fullPage: true });
-          screenshots.push(screenshot)
+        for (const url of urls) {
+          await this.screenshot(url, userId, scanId, viewPort, false)
+            .then((screenshot) => screenshot)
+            .catch((err) => {
+              // TODO: if error, set a default image
+              console.log(err)
+            });
         }
-        await browser.close();
-        return resolve(screenshots);
+        return resolve('success');
       }
       catch (error: any) {
         return reject(error)

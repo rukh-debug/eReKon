@@ -7,6 +7,7 @@ import { SettingService } from "./setting";
 import { waybackService } from "./scanSubServices/wayback";
 import { wappalyzerService } from "./scanSubServices/wappalizer";
 import { puppeteerService } from "./scanSubServices/screenshot";
+import { subdomainService } from "./scanSubServices/subdomain";
 
 export class ScanService {
   static async initScan(user: any, url: string) {
@@ -24,9 +25,8 @@ export class ScanService {
     })
     await scan.save();
 
-    // TODO: initialize directory in static folder for this scan
-    const dir = path.join(__dirname, '..', '..', 'static', user._id.toString(), scan._id.toString());
-    console.log(dir);
+    // initialize static folder for the scan data like images and subdmains and json files
+    const dir = path.join(__dirname, '..', 'static', user._id.toString(), scan._id.toString());
     // const dir = `@/static/${user._id}/${scan._id}`
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -48,13 +48,18 @@ export class ScanService {
 
   static async startScan(scanId: string) {
     const scan = await this.getScan(scanId);
+    // set timestamp
     scan.status = "running";
+    await scan.save();
+    // grab settings from user
+    const setting = await SettingService.getSetting(scan.user.toString());
     // -------------------------------------------------------------------------------- //
     // Screenshot homepage of the url //
-    await puppeteerService.screenshot(scan.url, scan.user.toString(), scan._id.toString())
-      .then(async (screenshot: any) => {
+    await puppeteerService.screenshot(scan.url, scan.user.toString(), scan._id.toString(), setting.viewPort)
+      .then(async () => {
         // Saved screenshot to static folder
         scan.progress = 1;
+        console.log("Screenshot saved to static folder")
         await scan.save();
       }).catch((error: any) => {
         console.log(error);
@@ -65,6 +70,7 @@ export class ScanService {
       .then(async (wappalyzerScan: any) => {
         scan.technologies = wappalyzerScan;
         scan.progress = 5;
+        console.log("Wappalyzer scan completed")
         await scan.save();
       }).catch((error: any) => {
         console.log(error);
@@ -76,14 +82,36 @@ export class ScanService {
       .then(async (waybackScan: any) => {
         scan.wayback = waybackScan;
         scan.progress = 10;
+        console.log("Wayback scan completed")
         await scan.save();
       }).catch((error: any) => {
         console.log(error);
       });
 
     // -------------------------------------------------------------------------------- //
-    // port scan - nmap scan //
+    // Subdomain scan - findomain //
+    await subdomainService.search(scan.url, scan.user.toString(), scan._id.toString(), scan.scanMode, scan.timestamp)
+      .then(async (subdomainScan: any) => {
+        scan.subdomains = subdomainScan;
+        scan.progress = 15;
+        console.log("Subdomain scan completed")
+        await scan.save();
+      }).catch((error: any) => {
+        console.log(error);
+      });
 
+    // -------------------------------------------------------------------------------- //
+    // Screenshot subdomains //
+    await puppeteerService.screenshotBulk(scan.subdomains, scan.user.toString(), scan._id.toString(), setting.viewPort)
+      .then(async () => {
+        scan.progress = 20;
+        console.log("Screenshot subdomains completed")
+        await scan.save();
+      }).catch((error: any) => {
+        console.log(error);
+      });
+
+    // -------------------------------------------------------------------------------- //
 
     return scan;
   }

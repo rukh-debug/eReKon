@@ -24,7 +24,9 @@ export interface scanDocument extends mongoose.Document {
       categories: string[];
     }
   ],
+  subdomains: string[];
   progress: number;
+  timestamp: Date;
 }
 
 const scanSchema = new mongoose.Schema({
@@ -61,9 +63,14 @@ const scanSchema = new mongoose.Schema({
       categories: [String],
     },
   ],
+  subdomains: [String],
   progress: {
     type: Number,
     default: 1,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
   },
 });
 

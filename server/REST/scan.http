@@ -8,5 +8,5 @@ Content-Type: application/json
 
 ### 
 
-GET {{$dotenv BASE_URL}}/scan/6437030783a4bcf1304bbd92
+GET {{$dotenv BASE_URL}}/scan/64372d44129be64a2aab43bf
 Authorization: Beearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDMzMmNjZWRhODBiODljYWYzZDRmNDUiLCJ1c2VybmFtZSI6Imhvd2FyZCIsImlhdCI6MTY4MTI5NDc2NiwiZXhwIjoxNjg5MDcwNzY2fQ.-VxTcdcBZAqKRueK8uZSegOZOzU3fCTzygZ7NpU-JjY

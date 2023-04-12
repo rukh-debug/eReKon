@@ -7,6 +7,7 @@ export interface settingDocument extends mongoose.Document {
   wordlist: string;
   // enums for wordlist
   // "small" | "medium" | "large" | "custom",
+  viewPort: string;
 }
 
 const settingSchema = new mongoose.Schema({
@@ -23,6 +24,10 @@ const settingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+  },
+  viewPort: {
+    type: String,
+    default: "1920x1080",
   },
 });
 
