@@ -29,6 +29,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(routes);
+// set static dir
+app.use(
+  express.static("static", {
+    index: false,
+    maxAge: 86400000
+  })
+)
 
 const port = process.env.PORT || 3000;
 

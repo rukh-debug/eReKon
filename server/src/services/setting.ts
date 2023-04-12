@@ -1,9 +1,8 @@
 import Setting from "../models/setting";
 import { settingDocument } from "../models/setting";
-import { Request } from "express";
 
 export class SettingService {
-  static async getSetting(userId: Request): Promise<settingDocument> {
+  static async getSetting(userId: String): Promise<settingDocument> {
     const setting = await Setting.findOne({
       user: userId,
     });
@@ -19,7 +18,7 @@ export class SettingService {
     return setting;
   }
 
-  static async updateSetting(userId: string, data: any): Promise<settingDocument> {
+  static async updateSetting(userId: string, data: settingDocument): Promise<settingDocument> {
     const setting = await Setting.findOne({
       user: userId,
     });
@@ -33,7 +32,7 @@ export class SettingService {
       return newSetting;
     }
 
-    setting.defaultScan = data.defaultScan;
+    setting.scanMode = data.scanMode;
     setting.wordlist = data.wordlist;
     await setting.save();
     return setting;

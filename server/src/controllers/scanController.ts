@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
-import { SettingService } from '../services/setting';
+import { ScanService } from '../services/scan';
 
-export class SettingController {
-  static async getSetting(req: Request, res: Response) {
+export class ScanController {
+  static async startScan(req: Request, res: Response) {
     try {
-      const setting = await SettingService.getSetting(req.user?._id);
+      const scan = await ScanService.initScan(req.user, req.body.url);
       return res.status(200).json({
         status: 'success',
-        message: 'Setting fetched successfully',
+        message: 'Scan started successfully',
         data: {
-          setting,
+          scan,
         },
       });
     } catch (error: any) {
@@ -20,18 +20,17 @@ export class SettingController {
     }
   }
 
-  static async updateSetting(req: any, res: Response) {
+  static async getScan(req: Request, res: Response) {
     try {
-      const setting = await SettingService.updateSetting(req.user._id, req.body);
+      const scan = await ScanService.getScan(req.params.scanId);
       return res.status(200).json({
         status: 'success',
-        message: 'Setting updated successfully',
+        message: 'Scan fetched successfully',
         data: {
-          setting,
+          scan,
         },
       });
     } catch (error: any) {
-      console.log(error)
       return res.status(401).json({
         status: 'error',
         message: error.message,
@@ -39,4 +38,3 @@ export class SettingController {
     }
   }
 }
-

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface settingDocument extends mongoose.Document {
-  defaultScan: string;
+  scanMode: string;
   // enums for defaultScan
   // "effective" | "fast",
   wordlist: string;
@@ -10,7 +10,7 @@ export interface settingDocument extends mongoose.Document {
 }
 
 const settingSchema = new mongoose.Schema({
-  defaultScan: {
+  scanMode: {
     type: String,
     enum: ["effective", "fast"],
     default: "fast",

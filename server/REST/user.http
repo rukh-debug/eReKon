@@ -1,4 +1,4 @@
-POST http://localhost:9999/user/signup
+POST {{$dotenv BASE_URL}}/user/signup
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:9999/user/login
+POST {{$dotenv BASE_URL}}/user/login
 Content-Type: application/json
 
 {
@@ -19,6 +19,6 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:9999/user/64332cceda80b89caf3d4f45
+GET {{$dotenv BASE_URL}}/user/64332cceda80b89caf3d4f45
 
 ###

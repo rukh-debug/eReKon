@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import { possibleRedirects } from "../config/payloads";
+import { possibleRedirects } from "../../config/payloads";
 
 
 export class waybackService {

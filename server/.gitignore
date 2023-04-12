@@ -1,5 +1,6 @@
 DB
 bin
+static
 # Logs
 logs
 *.log
