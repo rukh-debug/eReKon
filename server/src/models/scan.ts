@@ -13,20 +13,27 @@ export interface scanDocument extends mongoose.Document {
     links: string[];
     uLinks: string[];
   },
-  technologies: [
-    {
-      name: string;
-      slug: string;
-      description: string;
-      confidence: string;
-      version: string;
-      website: string;
-      categories: string[];
-    }
-  ],
   subdomains: string[];
   progress: number;
   timestamp: Date;
+  basic: {
+    title: string;
+    ip: string;
+    status: number;
+    url: string;
+    openPorts: string[];
+    technologies: [
+      {
+        name: string;
+        slug: string;
+        description: string;
+        confidence: string;
+        version: string;
+        website: string;
+        categories: string[];
+      }
+    ]
+  }
 }
 
 const scanSchema = new mongoose.Schema({
@@ -52,18 +59,22 @@ const scanSchema = new mongoose.Schema({
     links: [String],
     uLinks: [String],
   },
-  technologies: [
-    {
+  subdomains: [String],
+  basic: {
+    title: String,
+    ip: String,
+    status: Number,
+    url: String,
+    openPorts: [String],
+    technologies: [{
       name: String,
       slug: String,
       description: String,
       confidence: String,
       version: String,
       website: String,
-      categories: [String],
-    },
-  ],
-  subdomains: [String],
+    }],
+  },
   progress: {
     type: Number,
     default: 1,

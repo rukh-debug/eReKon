@@ -8,6 +8,8 @@ import { waybackService } from "./scanSubServices/wayback";
 import { wappalyzerService } from "./scanSubServices/wappalizer";
 import { puppeteerService } from "./scanSubServices/screenshot";
 import { subdomainService } from "./scanSubServices/subdomain";
+import { basicService } from "./scanSubServices/basic";
+import { portService } from "./scanSubServices/port";
 
 export class ScanService {
   static async initScan(user: any, url: string) {
@@ -53,28 +55,54 @@ export class ScanService {
     await scan.save();
     // grab settings from user
     const setting = await SettingService.getSetting(scan.user.toString());
+
     // -------------------------------------------------------------------------------- //
-    // Screenshot homepage of the url //
-    await puppeteerService.screenshot(scan.url, scan.user.toString(), scan._id.toString(), setting.viewPort)
-      .then(async () => {
-        // Saved screenshot to static folder
-        scan.progress = 1;
-        console.log("Screenshot saved to static folder")
-        await scan.save();
-      }).catch((error: any) => {
-        console.log(error);
-      });
+
+    // // Screenshot homepage of the url //
+    // await puppeteerService.screenshot(scan.url, scan.user.toString(), scan._id.toString(), setting.viewPort)
+    //   .then(async () => {
+    //     // Saved screenshot to static folder
+    //     scan.progress = 1;
+    //     console.log("Screenshot saved to static folder")
+    //     await scan.save();
+    //   }).catch((error: any) => {
+    //     console.log(error);
+    //   });
+
+    // // -------------------------------------------------------------------------------- //
+    // // Subdomain scan - findomain //
+    // await subdomainService.search(scan.url, scan.user.toString(), scan._id.toString(), scan.scanMode, scan.timestamp)
+    //   .then(async (subdomainScan: any) => {
+    //     scan.subdomains = subdomainScan;
+    //     scan.progress = 15;
+    //     console.log("Subdomain scan completed")
+    //     await scan.save();
+    //   }).catch((error: any) => {
+    //     console.log(error);
+    //   });
+
+
+    scan.subdomains = [
+      "https://mail.nepal.gov.np/",
+      "https://mx1.nepal.gov.np/",
+      "https://www.nepal.gov.np/",
+      "https://nepal.gov.np/"
+    ]
+    scan.save()
+
+    // -------------------------------------------------------------------------------- //
+    // -------------------------------------------------------------------------------- //
     // -------------------------------------------------------------------------------- //
     // wallalizer scan - version scan //
     await wappalyzerService.fetchDetails(scan.url)
       .then(async (wappalyzerScan: any) => {
-        scan.technologies = wappalyzerScan;
         scan.progress = 5;
         console.log("Wappalyzer scan completed")
         await scan.save();
       }).catch((error: any) => {
         console.log(error);
       });
+
 
     // -------------------------------------------------------------------------------- //
     // wayback scan - wayback url's scan // possible open redirect filters //
@@ -89,16 +117,28 @@ export class ScanService {
       });
 
     // -------------------------------------------------------------------------------- //
-    // Subdomain scan - findomain //
-    await subdomainService.search(scan.url, scan.user.toString(), scan._id.toString(), scan.scanMode, scan.timestamp)
-      .then(async (subdomainScan: any) => {
-        scan.subdomains = subdomainScan;
-        scan.progress = 15;
-        console.log("Subdomain scan completed")
+    // basic scan - basic info about the url //
+    await basicService.bulkBasic(scan.subdomains, scan.scanMode)
+      .then(async (basicScan: any) => {
+        scan.basic = basicScan;
+        scan.progress = 0;
+        console.log("Basic scan completed")
         await scan.save();
       }).catch((error: any) => {
         console.log(error);
       });
+
+    // -------------------------------------------------------------------------------- //
+    // Port scanning //    
+    await portService.bulkPort(scan.subdomains, scan.scanMode)
+      .then(async (portScan: any) => {
+        scan.progress = 0;
+        console.log("Port scan completed")
+        await scan.save();
+      }).catch((error: any) => {
+        console.log(error);
+      });
+
 
     // -------------------------------------------------------------------------------- //
     // Screenshot subdomains //
@@ -112,6 +152,10 @@ export class ScanService {
       });
 
     // -------------------------------------------------------------------------------- //
+
+
+    // -------------------------------------------------------------------------------- //
+
 
     return scan;
   }

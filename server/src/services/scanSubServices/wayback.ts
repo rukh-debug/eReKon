@@ -2,7 +2,6 @@
 import axios from "axios";
 import { possibleRedirects } from "../../config/payloads";
 
-
 export class waybackService {
   static async getLinks(url: string): Promise<{ links: string[], uLinks: string[] }> {
     return new Promise(async (resolve, reject) => {
