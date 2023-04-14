@@ -1,5 +1,28 @@
 import mongoose from "mongoose";
 
+export interface detailDoc {
+  title: string;
+  ip: string;
+  status: number;
+  url: string;
+  contentLength: string;
+  ports: {
+    port: number,
+    status: string,
+    banner: string,
+  }[],
+  technologies:
+  {
+    name: string;
+    slug: string;
+    description: string;
+    confidence: string;
+    version: string;
+    website: string;
+    // categories: string[];
+  }[],
+  wayback: string[]
+}
 export interface scanDocument extends mongoose.Document {
   user: mongoose.Schema.Types.ObjectId;
   url: string;
@@ -9,31 +32,11 @@ export interface scanDocument extends mongoose.Document {
   scanMode: string;
   // enums for scanType
   // "fast" | "effective",
-  wayback: {
-    links: string[];
-    uLinks: string[];
-  },
+  currentScan: string[];
   subdomains: string[];
   progress: number;
   timestamp: Date;
-  basic: {
-    title: string;
-    ip: string;
-    status: number;
-    url: string;
-    openPorts: string[];
-    technologies: [
-      {
-        name: string;
-        slug: string;
-        description: string;
-        confidence: string;
-        version: string;
-        website: string;
-        categories: string[];
-      }
-    ]
-  }
+  detail: [detailDoc]
 }
 
 const scanSchema = new mongoose.Schema({
@@ -55,17 +58,19 @@ const scanSchema = new mongoose.Schema({
     enum: ["fast", "effective"],
     default: "fast",
   },
-  wayback: {
-    links: [String],
-    uLinks: [String],
-  },
+  currentScan: [String],
   subdomains: [String],
-  basic: {
+  detail: [{
     title: String,
     ip: String,
     status: Number,
     url: String,
-    openPorts: [String],
+    contentLength: String,
+    ports: [{
+      port: Number,
+      status: String,
+      banner: String,
+    }],
     technologies: [{
       name: String,
       slug: String,
@@ -74,7 +79,8 @@ const scanSchema = new mongoose.Schema({
       version: String,
       website: String,
     }],
-  },
+    wayback: [String],
+  }],
   progress: {
     type: Number,
     default: 1,

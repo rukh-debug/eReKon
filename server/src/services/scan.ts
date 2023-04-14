@@ -2,14 +2,12 @@ import fs from "fs";
 import path from 'path';
 
 import Scan from "../models/scan";
+
 import { SettingService } from "./setting";
 
-import { waybackService } from "./scanSubServices/wayback";
-import { wappalyzerService } from "./scanSubServices/wappalizer";
-import { puppeteerService } from "./scanSubServices/screenshot";
 import { subdomainService } from "./scanSubServices/subdomain";
-import { basicService } from "./scanSubServices/basic";
-import { portService } from "./scanSubServices/port";
+import { fullScanService } from "./scanSubServices/fullScan";
+import { screenshotService } from "./scanSubServices/screenshot";
 
 export class ScanService {
   static async initScan(user: any, url: string) {
@@ -55,107 +53,60 @@ export class ScanService {
     await scan.save();
     // grab settings from user
     const setting = await SettingService.getSetting(scan.user.toString());
+    // const user: any = await User.findOne({ _id: scan.user.toString() });
 
     // -------------------------------------------------------------------------------- //
 
-    // // Screenshot homepage of the url //
-    // await puppeteerService.screenshot(scan.url, scan.user.toString(), scan._id.toString(), setting.viewPort)
-    //   .then(async () => {
-    //     // Saved screenshot to static folder
-    //     scan.progress = 1;
-    //     console.log("Screenshot saved to static folder")
-    //     await scan.save();
-    //   }).catch((error: any) => {
-    //     console.log(error);
-    //   });
-
-    // // -------------------------------------------------------------------------------- //
-    // // Subdomain scan - findomain //
-    // await subdomainService.search(scan.url, scan.user.toString(), scan._id.toString(), scan.scanMode, scan.timestamp)
-    //   .then(async (subdomainScan: any) => {
-    //     scan.subdomains = subdomainScan;
-    //     scan.progress = 15;
-    //     console.log("Subdomain scan completed")
-    //     await scan.save();
-    //   }).catch((error: any) => {
-    //     console.log(error);
-    //   });
-
-
-    scan.subdomains = [
-      "https://mail.nepal.gov.np/",
-      "https://mx1.nepal.gov.np/",
-      "https://www.nepal.gov.np/",
-      "https://nepal.gov.np/"
-    ]
-    scan.save()
-
-    // -------------------------------------------------------------------------------- //
-    // -------------------------------------------------------------------------------- //
-    // -------------------------------------------------------------------------------- //
-    // wallalizer scan - version scan //
-    await wappalyzerService.fetchDetails(scan.url)
-      .then(async (wappalyzerScan: any) => {
-        scan.progress = 5;
-        console.log("Wappalyzer scan completed")
-        await scan.save();
-      }).catch((error: any) => {
-        console.log(error);
-      });
-
-
-    // -------------------------------------------------------------------------------- //
-    // wayback scan - wayback url's scan // possible open redirect filters //
-    await waybackService.getLinks(scan.url)
-      .then(async (waybackScan: any) => {
-        scan.wayback = waybackScan;
-        scan.progress = 10;
-        console.log("Wayback scan completed")
-        await scan.save();
-      }).catch((error: any) => {
-        console.log(error);
-      });
-
-    // -------------------------------------------------------------------------------- //
-    // basic scan - basic info about the url //
-    await basicService.bulkBasic(scan.subdomains, scan.scanMode)
-      .then(async (basicScan: any) => {
-        scan.basic = basicScan;
-        scan.progress = 0;
-        console.log("Basic scan completed")
-        await scan.save();
-      }).catch((error: any) => {
-        console.log(error);
-      });
-
-    // -------------------------------------------------------------------------------- //
-    // Port scanning //    
-    await portService.bulkPort(scan.subdomains, scan.scanMode)
-      .then(async (portScan: any) => {
-        scan.progress = 0;
-        console.log("Port scan completed")
-        await scan.save();
-      }).catch((error: any) => {
-        console.log(error);
-      });
-
-
-    // -------------------------------------------------------------------------------- //
-    // Screenshot subdomains //
-    await puppeteerService.screenshotBulk(scan.subdomains, scan.user.toString(), scan._id.toString(), setting.viewPort)
+    // Screenshot homepage of the url //
+    await screenshotService.screenshot(scan.url, scan.user.toString(), scan._id.toString(), setting.viewPort)
       .then(async () => {
-        scan.progress = 20;
-        console.log("Screenshot subdomains completed")
+        // Saved screenshot to static folder
+        scan.progress = 1;
+        console.log("Screenshot saved to static folder")
         await scan.save();
       }).catch((error: any) => {
         console.log(error);
       });
 
     // -------------------------------------------------------------------------------- //
+    // Subdomain scan - findomain //
+    await subdomainService.search(scan.url, scan.user.toString(), scan._id.toString(), scan.scanMode, scan.timestamp)
+      .then(async (subdomainScan: any) => {
+        scan.subdomains = subdomainScan;
+        scan.progress = 15;
+        console.log("Subdomain scan completed")
+        await scan.save();
+      }).catch((error: any) => {
+        console.log(error);
+      });
 
-
+    // scan.subdomains = [
+    //   "https://nepal.gov.np/",
+    //   "https://rubenk.com.np",
+    //   "https://www.rubenk.com.np",
+    //   "https://www.rubenk.com.np/",
+    //   "https://rubenk.com.np/",
+    //   "https://www.rubenk.com.np",
+    //   "https://rubenk.com.np",
+    //   "https://www.rubenk.com.np/",
+    // ]
+    // scan.save()
     // -------------------------------------------------------------------------------- //
-
+    // set batch for scan
+    const PROCESS_BATCH_SIZE = process.env.PROCESS_BATCH_SIZE ? parseInt(process.env.PROCESS_BATCH_SIZE) : 100;
+    const BATCH_SIZE = setting.batchSize > PROCESS_BATCH_SIZE ? PROCESS_BATCH_SIZE : setting.batchSize;
+    console.log(PROCESS_BATCH_SIZE, BATCH_SIZE)
+    // -------------------------------------------------------------------------------- //
+    // Full scan on subdomains //
+    await fullScanService.bulkOnSubdomains(setting, scan, BATCH_SIZE)
+      .then(async () => {
+        scan.progress = 100;
+        scan.status = "completed";
+        console.log("Full scan completed")
+        await scan.save();
+      }).catch((error: any) => {
+        console.log(error);
+      });
 
     return scan;
   }

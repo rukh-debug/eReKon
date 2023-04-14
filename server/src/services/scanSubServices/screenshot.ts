@@ -2,7 +2,7 @@ import Puppeteer from 'puppeteer';
 import path from 'path';
 import { extraService } from './extra';
 
-export class puppeteerService {
+export class screenshotService {
   static async screenshot(url: string, userId: string, scanId: string, viewPort: string, home: boolean = true) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -35,22 +35,22 @@ export class puppeteerService {
     })
   }
 
-  static async screenshotBulk(urls: string[], userId: string, scanId: string, viewPort: string) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        for (const url of urls) {
-          await this.screenshot(url, userId, scanId, viewPort, false)
-            .then((screenshot) => screenshot)
-            .catch((err) => {
-              // TODO: if error, set a default image
-              console.log(err)
-            });
-        }
-        return resolve('success');
-      }
-      catch (error: any) {
-        return reject(error)
-      }
-    })
-  }
+  // static async screenshotBulk(urls: string[], userId: string, scanId: string, viewPort: string) {
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       for (const url of urls) {
+  //         await this.screenshot(url, userId, scanId, viewPort, false)
+  //           .then((screenshot) => screenshot)
+  //           .catch((err) => {
+  //             // TODO: if error, set a default image
+  //             console.log(err)
+  //           });
+  //       }
+  //       return resolve('success');
+  //     }
+  //     catch (error: any) {
+  //       return reject(error)
+  //     }
+  //   })
+  // }
 }

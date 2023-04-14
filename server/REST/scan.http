@@ -3,10 +3,10 @@ Authorization: Beearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDMzMmNj
 Content-Type: application/json
 
 {
-    "url": "https://nepal.gov.np/"
+    "url": "https://worldlink.com.np/"
 }
 
 ### 
 
-GET {{$dotenv BASE_URL}}/scan/643742f5ad9422527c0f2bd2
+GET {{$dotenv BASE_URL}}/scan/64389a6c8dfdd6c0a29eee8a
 Authorization: Beearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDMzMmNjZWRhODBiODljYWYzZDRmNDUiLCJ1c2VybmFtZSI6Imhvd2FyZCIsImlhdCI6MTY4MTI5NDc2NiwiZXhwIjoxNjg5MDcwNzY2fQ.-VxTcdcBZAqKRueK8uZSegOZOzU3fCTzygZ7NpU-JjY
