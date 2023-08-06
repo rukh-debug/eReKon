@@ -25,3 +25,13 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
+.landingimg {
+  /* border: 1px solid red; */
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+  background-image: url("../../public/Assets/img/keyboardDark.jpg");
+}
