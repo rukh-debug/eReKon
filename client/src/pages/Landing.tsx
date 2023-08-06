@@ -1,7 +1,5 @@
 import React from "react";
 
-// import Header from "@/components/Common/Header";
-
 const Landing = () => {
   return (
     <div className="flex flex-col h-screen">

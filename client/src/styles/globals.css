@@ -18,12 +18,13 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+  background-color: #14181B;
 }
 
 
@@ -34,4 +35,12 @@ body {
   background-position: center center;
   background-size: cover;
   background-image: url("../../public/Assets/img/keyboardDark.jpg");
+}
+
+.cardimg {
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size : cover;
+  background-image: url("../../public/Assets/img/keyboard.jpeg");
 }
