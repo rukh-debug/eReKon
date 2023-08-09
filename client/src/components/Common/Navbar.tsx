@@ -20,6 +20,7 @@ const Navbar = () => {
           }}
         />
         {/* If user is logged out */}
+        
         <div className="flex justify-between">
           <Link className="px-3 text-gray-400" href="/register">
             Register
